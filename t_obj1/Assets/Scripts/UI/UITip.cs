@@ -27,6 +27,7 @@ public class UITip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         currentTip = Instantiate(tipUI);
         var currentTipPos = currentTip.GetComponent<RectTransform>();
+        //currentTipPos.
         //currentTipPos.position = new Vector2(1000.0f,0.0f);
         //currentTipPos.
         //currentTipPos.localPosition = tipPosition;
@@ -43,6 +44,7 @@ public class UITip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public void OnPointerExit(PointerEventData eventData)
     {
         Debug.Log("testOut");
+        Destroy(currentTip);
     }
 
     // Update is called once per frame

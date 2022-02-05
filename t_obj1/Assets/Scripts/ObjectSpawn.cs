@@ -23,7 +23,7 @@ public class ObjectSpawn : MonoBehaviour
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E)) {
-            spawnObject();
+            SpawnObject();
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -36,7 +36,7 @@ public class ObjectSpawn : MonoBehaviour
         }
     }
 
-    public void spawnObject() {
+    public void SpawnObject() {
         if (removeOnSpawn == true) {
             removeAll();
         }
@@ -70,10 +70,14 @@ public class ObjectSpawn : MonoBehaviour
 
     private GameObject test;
     public void removeAll() {
-        var objectAmount = spawnedObjects.Count;
-        for (int counter = 0; counter < objectAmount; counter++) {
-            Destroy(spawnedObjects[counter]);
+        spawnedObjects.ForEach(x =>
+        { 
+            Destroy(x);
+        });
+        //var objectAmount = spawnedObjects.Count;
+        //for (int counter = 0; counter < objectAmount; counter++) {
+        //    Destroy(spawnedObjects[counter]);
             
-        }
+        //}
     }
 }

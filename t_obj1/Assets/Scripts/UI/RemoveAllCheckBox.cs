@@ -10,6 +10,7 @@ public class RemoveAllCheckBox : MonoBehaviour
     void Start()
     {
         removeAllToggle = GetComponent<Toggle>();
+        //removeAllToggle.onValueChanged.RemoveListener
         removeAllToggle.onValueChanged.AddListener(onCheckBoxChange);
 
         //removeAllToggle.onValueChanged.RemoveListener(onCheckBoxChange);
