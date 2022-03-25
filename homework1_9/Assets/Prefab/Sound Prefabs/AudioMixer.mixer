@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!243 &-8327552225797826203
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Pickups
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 3c3e767d0a5a16b4fa84bf982ffd7b8c
+  m_Children: []
+  m_Volume: 7cd5e82ee79866a40a8df16b2e3e833c
+  m_Pitch: 6b98e9d3368442848b6ca7d3ce54f474
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -5538925665166831415}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-5538925665166831415
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 67105d8fdd175954da64fa02e0b3cc1b
+  m_EffectName: Attenuation
+  m_MixLevel: d6eaaea3ca240ae45b50525757f00e18
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!243 &-5215058386868177681
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hazards
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 2531a7b4e9af6924b8de7387c7b670a1
+  m_Children: []
+  m_Volume: b1b62da50afcf79459776e327c67b401
+  m_Pitch: 0bbe45ce046421843a96bd17c0c5decb
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -1961673268204115660}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &-1961673268204115660
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 0b492971310f07c45b59c6d0fdb08008
+  m_EffectName: Attenuation
+  m_MixLevel: 862aa7aedb4c72a438fffd3bc95a5171
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!241 &24100000
+AudioMixerController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AudioMixer
+  m_OutputGroup: {fileID: 0}
+  m_MasterGroup: {fileID: 24300002}
+  m_Snapshots:
+  - {fileID: 24500006}
+  m_StartSnapshot: {fileID: 24500006}
+  m_SuspendThreshold: -80
+  m_EnableSuspend: 1
+  m_UpdateMode: 0
+  m_ExposedParameters: []
+  m_AudioMixerGroupViews:
+  - guids:
+    - 9a5fb5fe464272a4f85745238c07cfce
+    - 2531a7b4e9af6924b8de7387c7b670a1
+    - 3c3e767d0a5a16b4fa84bf982ffd7b8c
+    name: View
+  m_CurrentViewIndex: 0
+  m_TargetSnapshot: {fileID: 24500006}
+--- !u!243 &24300002
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Master
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 9a5fb5fe464272a4f85745238c07cfce
+  m_Children:
+  - {fileID: -8327552225797826203}
+  - {fileID: -5215058386868177681}
+  m_Volume: a9fb7a7425567134bb3bea7bec48d421
+  m_Pitch: f7323a0ce1a50364c9e80b0a16e6a7ff
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 24400004}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
+--- !u!244 &24400004
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: ad33b8f82744b8e44b000ba165542bed
+  m_EffectName: Attenuation
+  m_MixLevel: bdd618f6f6eda0d4991528a91aaf616b
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
+--- !u!245 &24500006
+AudioMixerSnapshotController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Snapshot
+  m_AudioMixer: {fileID: 24100000}
+  m_SnapshotID: 3170e83195974c84d84fcdae6b7eae93
+  m_FloatValues:
+    b1b62da50afcf79459776e327c67b401: -9.833286
+  m_TransitionOverrides: {}
