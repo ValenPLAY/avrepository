@@ -1,0 +1,9 @@
+# created by Biturn
+# materials for file Archway1.obj
+
+newmtl CityStructures
+Ka 0.625000 0.625000 0.625000
+Kd 0.996094 0.996094 0.996094
+Ks 0.468750 0.468750 0.468750
+map_Kd CityStructures.tga
+

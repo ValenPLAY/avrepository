@@ -1,0 +1,21 @@
+# created by Biturn
+# materials for file KeeperStatue.obj
+
+newmtl KeeperStatue
+Ka 0.625000 0.625000 0.625000
+Kd 0.996094 0.996094 0.996094
+Ks 0.468750 0.468750 0.468750
+map_Kd KeeperStatue.tga
+
+newmtl Dust3x
+Ka 0.625000 0.625000 0.625000
+Kd 0.996094 0.996094 0.996094
+Ks 0.468750 0.468750 0.468750
+map_Kd Dust3x.tga
+
+newmtl white
+Ka 0.625000 0.625000 0.625000
+Kd 0.996094 0.996094 0.996094
+Ks 0.468750 0.468750 0.468750
+map_Kd white.tga
+
