@@ -1,47 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    // Player Stats
+    [Header("Player Stats")]
     public float movementSpeed = 10f;
     public float health = 100f;
     public float stamina = 100f;
     private float gravity = 9.8f;
     private CharacterController controller;
+    public int currentLevel;
 
-    // Player Camera
+    [Header("Camera Settings")]
     private float lookSensitivity = 2.0f;
     private float cameraLock;
 
-    // Player Body Parts
+    [Header("Body Part Settings")]
     public GameObject upperBody;
     public GameObject attachmentPoint;
 
-    public int currentLevel;
-
-    // Player Additions
-    private Light flashlight;
+    [Header("Flashlight Settings")]
+    public Light flashlight;
     private bool flashlightPressed;
 
     private bool isStunned = false;
 
-    // Player Animations
-    //public Animator charAnimator;
-
+    [Header("Player Sounds Settings")]
     public GameObject soundStepPrefab;
     private float timerBetweenStepsDefault = 0.5f;
     private float timerBetweenStepsCurrent;
 
-    
+    [Header("Raycast Look")]
+    public LayerMask lookIgnores;
+    [SerializeField] float raycastDistance = 20.0f;
+
+    [Header("Player Animations")]
+    private Animator animator;
+
+    [Header("UI")]
+    public GameObject watchOpenSound;
+
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        //flashlight = GetComponent<Light>();
-        flashlight = upperBody.GetComponent<Light>();
-        //charAnimator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+
+        if (flashlight == null) GetComponentInChildren<Light>();
     }
 
     // Update is called once per frame
@@ -53,19 +57,62 @@ public class PlayerCharacter : MonoBehaviour
         {
             Move();
         }
-        
+
         if (Input.GetButtonDown("Flashlight"))
         {
             Debug.Log("Flashlight");
-            
+
             flashlightPressed = !flashlightPressed;
             Flashlight(flashlightPressed);
-            
+
         }
-        
+
+        Ray lookRay = new Ray(upperBody.transform.position, upperBody.transform.forward);
+        RaycastHit target;
+        if (Physics.Raycast(lookRay, out target, raycastDistance, ~lookIgnores))
+        {
+            Debug.DrawRay(upperBody.transform.position, upperBody.transform.forward * 10.0f, Color.white);
+            Debug.Log(target.collider.gameObject.name);
+            Ghost spottedGhost = target.collider.GetComponent<Ghost>();
+            if (spottedGhost != null)
+            {
+                spottedGhost.Disappear();
+            }
+        }
+
         Gravity();
-        
+        CheckWatch();
+
         //Debug.Log(controller.velocity);
+    }
+
+    private void CheckWatch()
+    {
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+
+
+            animator.SetBool("isCheckingClock", true);
+            animator.SetTrigger("checkClock");
+        }
+        if (Input.GetKeyUp(KeyCode.Q))
+        {
+            animator.SetBool("isCheckingClock", false);
+        }
+    }
+
+    public void LoadWatch()
+    {
+        GameObject watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, 1.0f, 0.2f);
+        watchSound.transform.parent = transform;
+        Destroy(watchSound, 3);
+    }
+
+    public void UnloadWatch()
+    {
+        GameObject watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, -1.3f, 0.2f);
+        watchSound.transform.parent = transform;
+        Destroy(watchSound, 3);
     }
 
     private void OnTriggerEnter(Collider trigger)
@@ -74,7 +121,7 @@ public class PlayerCharacter : MonoBehaviour
         {
             Floor triggeredFloor = trigger.gameObject.GetComponent<Floor>();
             currentLevel = triggeredFloor.levelNumber;
-            Debug.Log("Current Level: "+currentLevel);
+            Debug.Log("Current Level: " + currentLevel);
         }
     }
 
@@ -91,16 +138,17 @@ public class PlayerCharacter : MonoBehaviour
 
         if (vertical != 0.0f || horizontal != 0.0f)
         {
-            //charAnimator.SetBool("isWalking", true);
-        } else
+            animator.SetBool("isWalking", true);
+        }
+        else
         {
-            //charAnimator.SetBool("isWalking", false);
+            animator.SetBool("isWalking", false);
         }
 
         var actualMovementSpeed = movementSpeed;
         Vector3 charMovement = new Vector3(horizontal * actualMovementSpeed, 0.0f, vertical * actualMovementSpeed);
 
-        controller.Move(transform.TransformDirection(charMovement)*Time.deltaTime);
+        controller.Move(transform.TransformDirection(charMovement) * Time.deltaTime);
         var actualCameraRotate = rotationX * lookSensitivity;
         transform.Rotate(Vector3.up, actualCameraRotate);
         if (Mathf.Abs(cameraLock + rotationY) <= 80)
@@ -112,9 +160,8 @@ public class PlayerCharacter : MonoBehaviour
 
         if (controller.velocity.magnitude > 0.2f && timerBetweenStepsCurrent <= 0)
         {
-            GameObject stepSound = Instantiate(soundStepPrefab, transform.position, transform.rotation);
-            AudioSource stepSoundSource = stepSound.GetComponent<AudioSource>();
-            stepSoundSource.pitch = Random.Range(0.7f, 1.4f);
+            //GameObject stepSound = Instantiate(soundStepPrefab, transform.position, transform.rotation);
+            GameObject stepSound = GameMechanics.playerSound(soundStepPrefab, transform.position, 1.0f, 0.3f);
             Destroy(stepSound, 3);
             timerBetweenStepsCurrent = timerBetweenStepsDefault;
         }
@@ -137,9 +184,10 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Flashlight(bool flswitch)
     {
-        if (flashlight) {
+        if (flashlight)
+        {
             flashlight.enabled = !flashlight.enabled;
-            
+
         }
     }
 }

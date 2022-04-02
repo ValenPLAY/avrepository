@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,25 +16,31 @@ public class Floor : MonoBehaviour
     void Start()
     {
         floorSize = topPoint.transform.position.y - botPoint.transform.position.y;
-        //Debug.Log("Size "+floorSize);
-        if (randomPOI.Count > 0 && randomPrefabs.Count > 0)
-        {
-            for (int selectedPOI = 0; selectedPOI < randomPOI.Count; selectedPOI++) { 
-            int selectedPrefab = Random.Range(-5,randomPrefabs.Count);
-            if (selectedPrefab>=0)
-            {
-                    GameObject spawnedPOI = Instantiate(randomPrefabs[selectedPrefab], randomPOI[selectedPOI].transform);
-                    spawnedPOI.transform.rotation = Quaternion.Euler(0,Random.Range(0,360),0);
-                    spawnedPOI.transform.localScale *= Random.Range(0.8f,1.2f);
-            }
-            
-            }
-        }
+        GeneratePOI();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    void GeneratePOI()
+    {
+        if (randomPOI.Count > 0 && randomPrefabs.Count > 0)
+        {
+            for (int selectedPOI = 0; selectedPOI < randomPOI.Count; selectedPOI++)
+            {
+                int selectedPrefab = Random.Range(-5, randomPrefabs.Count);
+                if (selectedPrefab >= 0)
+                {
+                    GameObject spawnedPOI = Instantiate(randomPrefabs[selectedPrefab], randomPOI[selectedPOI].transform);
+                    spawnedPOI.transform.rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
+                    spawnedPOI.transform.localScale *= Random.Range(0.8f, 1.2f);
+                }
+
+            }
+        }
     }
 }

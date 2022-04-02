@@ -19,6 +19,20 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-7086014673436362907
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 8a2ce6865efe03c4b9c4f6e6ea9610a2
+  m_EffectName: Attenuation
+  m_MixLevel: c59bf59341d031d47aab3dfc5d6d8667
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &-6542096903057262163
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
@@ -74,6 +88,7 @@ AudioMixerController:
     - 5d849796d4e18f040851edb10f45f2ac
     - a3a014da84af7e14cb922e845ef6cded
     - 89e2e3f8242cfd144bdbdc52a0a5cae7
+    - f840c31efe820bf48bc772113ce77215
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -90,6 +105,7 @@ AudioMixerGroupController:
   - {fileID: -6542096903057262163}
   - {fileID: -8863714113096518997}
   - {fileID: 5122933202588757961}
+  - {fileID: 1469258182399763217}
   m_Volume: 62e35a4719f85e74e892dd127101e7be
   m_Pitch: 310146d92ce55d14199e60448642eabe
   m_Send: 00000000000000000000000000000000
@@ -125,7 +141,27 @@ AudioMixerSnapshotController:
   m_FloatValues:
     2155279b19186754a9af4b4ea31205e2: -30.320126
     a68e208cad7cd5547a1ae1c8d52d0c2d: -10.345207
+    0e5954bd0ca013c40b1ae59102aab826: -4.9356413
   m_TransitionOverrides: {}
+--- !u!243 &1469258182399763217
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: UI
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: f840c31efe820bf48bc772113ce77215
+  m_Children: []
+  m_Volume: 0e5954bd0ca013c40b1ae59102aab826
+  m_Pitch: bcf469bdc5beeb649bb9a5089e3cf228
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: -7086014673436362907}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!244 &2344435302279822736
 AudioMixerEffectController:
   m_ObjectHideFlags: 3

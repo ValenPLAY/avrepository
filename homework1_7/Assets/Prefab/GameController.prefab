@@ -48,5 +48,12 @@ MonoBehaviour:
   levelPrefabs:
   - {fileID: 1731012777623984861, guid: 40f168880df2e9e409677aa4a842eebc, type: 3}
   - {fileID: 1731012777623984861, guid: 5e3b94c5a80cf494d830b6078b3a48d9, type: 3}
-  levels: []
+  rareLevelPrefabs:
+  - {fileID: 1731012777623984861, guid: c61d89bd560ec7949ba013710fc7a088, type: 3}
+  monsterLevelPrefabs: []
+  safeLevels: 0
+  rareLevelChance: 0.2
+  monsterLevelChance: 0.1
+  monsterChancePerLevelMultiplier: 1.02
   preloadedLevelsAmount: 6
+  levels: []
