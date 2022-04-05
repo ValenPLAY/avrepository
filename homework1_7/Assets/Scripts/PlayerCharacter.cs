@@ -9,6 +9,7 @@ public class PlayerCharacter : MonoBehaviour
     private float gravity = 9.8f;
     private CharacterController controller;
     public int currentLevel;
+    public float pickupRange = 1.0f;
 
     [Header("Camera Settings")]
     private float lookSensitivity = 2.0f;
@@ -20,6 +21,7 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Flashlight Settings")]
     public Light flashlight;
+    public GameObject flashlightSoundPrefab;
     private bool flashlightPressed;
 
     private bool isStunned = false;
@@ -31,13 +33,17 @@ public class PlayerCharacter : MonoBehaviour
 
     [Header("Raycast Look")]
     public LayerMask lookIgnores;
+    private GameObject lookingTarget;
     [SerializeField] float raycastDistance = 20.0f;
 
     [Header("Player Animations")]
     private Animator animator;
 
-    [Header("UI")]
+    [Header("Watch")]
     public GameObject watchOpenSound;
+    public Transform watchPosition;
+    public GameObject watchPrefab;
+    private GameObject currentWatch;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +52,8 @@ public class PlayerCharacter : MonoBehaviour
         animator = GetComponent<Animator>();
 
         if (flashlight == null) GetComponentInChildren<Light>();
+
+        GameController.Instance.FloorCheck(currentLevel);
     }
 
     // Update is called once per frame
@@ -64,26 +72,47 @@ public class PlayerCharacter : MonoBehaviour
 
             flashlightPressed = !flashlightPressed;
             Flashlight(flashlightPressed);
+            GameObject watchSound = GameMechanics.playerSound(flashlightSoundPrefab, transform.position, 1.0f, 0.2f);
+            Destroy(watchSound, 3);
 
         }
 
+
+        VisionCheck();
+        Gravity();
+        CheckWatch();
+
+        //Debug.Log(controller.velocity);
+    }
+
+    private void VisionCheck()
+    {
         Ray lookRay = new Ray(upperBody.transform.position, upperBody.transform.forward);
         RaycastHit target;
         if (Physics.Raycast(lookRay, out target, raycastDistance, ~lookIgnores))
         {
             Debug.DrawRay(upperBody.transform.position, upperBody.transform.forward * 10.0f, Color.white);
-            Debug.Log(target.collider.gameObject.name);
+
             Ghost spottedGhost = target.collider.GetComponent<Ghost>();
             if (spottedGhost != null)
             {
                 spottedGhost.Disappear();
             }
+            if (target.distance <= pickupRange)
+            {
+                Message foundMessage = target.collider.GetComponent<Message>();
+
+                if (foundMessage != null)
+                {
+                    if (Input.GetKeyDown(KeyCode.E))
+                    {
+                        foundMessage.MessagePickup();
+                    }
+
+
+                }
+            }
         }
-
-        Gravity();
-        CheckWatch();
-
-        //Debug.Log(controller.velocity);
     }
 
     private void CheckWatch()
@@ -103,13 +132,27 @@ public class PlayerCharacter : MonoBehaviour
 
     public void LoadWatch()
     {
+        if (currentWatch == null)
+        {
+            currentWatch = Instantiate(watchPrefab, watchPosition.position, watchPosition.rotation);
+            currentWatch.transform.parent = watchPosition;
+            currentWatch.transform.localScale = Vector3.one;
+        }
+        else
+        {
+            currentWatch.SetActive(true);
+        }
+
         GameObject watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, 1.0f, 0.2f);
         watchSound.transform.parent = transform;
+
         Destroy(watchSound, 3);
     }
 
     public void UnloadWatch()
     {
+        if (currentWatch != null) currentWatch.SetActive(false);
+
         GameObject watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, -1.3f, 0.2f);
         watchSound.transform.parent = transform;
         Destroy(watchSound, 3);
@@ -122,6 +165,8 @@ public class PlayerCharacter : MonoBehaviour
             Floor triggeredFloor = trigger.gameObject.GetComponent<Floor>();
             currentLevel = triggeredFloor.levelNumber;
             Debug.Log("Current Level: " + currentLevel);
+
+            GameController.Instance.FloorCheck(currentLevel);
         }
     }
 

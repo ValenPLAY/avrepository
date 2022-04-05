@@ -1,12 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameController : Singleton<GameController>
 {
-    [Header("Player Settings")]
-    public GameObject player;
-    private PlayerCharacter playerController;
-
     [Header("Starting level")]
     public GameObject startingCell;
 
@@ -32,30 +28,23 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        playerController = player.GetComponent<PlayerCharacter>();
         levels.Add(startingCell);
         for (int x = 1; x < preloadedLevelsAmount; x++)
         {
-            FloorCreate(x);
-            //Debug.Log(level.floorSize);
-            // - levels[x].GetComponent<Floor>().topPoint.transform.position;
-            //Debug.Log(level.botPoint.transform.position);
+            FloorCreate(x, 0);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void FloorCheck(int currentLevel)
     {
-        if (playerController.currentLevel + preloadedLevelsAmount >= levels.Count)
+        if (currentLevel + preloadedLevelsAmount >= levels.Count)
         {
-            //levels.Add(new GameObject());
-
             levels.Add(new GameObject());
-            FloorCreate(levels.Count - 1);
+            FloorCreate(levels.Count - 1, currentLevel);
         }
 
-        int TopFloorID = playerController.currentLevel - preloadedLevelsAmount;
-        int BotFloorID = playerController.currentLevel + preloadedLevelsAmount + 1;
+        int TopFloorID = currentLevel - preloadedLevelsAmount;
+        int BotFloorID = currentLevel + preloadedLevelsAmount + 1;
         if (TopFloorID >= 0 && levels[TopFloorID] != null)
         {
             FloorDestroy(TopFloorID);
@@ -72,16 +61,16 @@ public class GameController : MonoBehaviour
 
         if (levels[BotFloorID - 1] == null)
         {
-            FloorCreate(BotFloorID - 1);
+            FloorCreate(BotFloorID - 1, currentLevel);
         }
 
         if (TopFloorID >= -1 && levels[TopFloorID + 1] == null)
         {
-            FloorCreate(TopFloorID + 1);
+            FloorCreate(TopFloorID + 1, currentLevel);
         }
     }
 
-    public void FloorCreate(int createdLevelID)
+    public void FloorCreate(int createdLevelID, int currentLevel)
     {
         //Debug.Log("Count: " + levels.Count);
         GameObject newLevel = Instantiate(createdFloor());
@@ -97,7 +86,7 @@ public class GameController : MonoBehaviour
         }
 
         Floor level = levels[createdLevelID].GetComponent<Floor>();
-        if (playerController.currentLevel < createdLevelID)
+        if (currentLevel < createdLevelID)
         {
             level.transform.position = levels[createdLevelID - 1].GetComponent<Floor>().botPoint.transform.position;
             level.transform.position -= level.topPoint.transform.localPosition;
@@ -119,10 +108,10 @@ public class GameController : MonoBehaviour
 
     GameObject createdFloor()
     {
-        float randomRoomChance = Random.Range(0.0f, 1.0f);
         int selectedPrefab;
         GameObject generatedFloor;
 
+        float randomRoomChance = Random.Range(0.0f, 1.0f);
         if (rareLevelPrefabs.Count > 0 && randomRoomChance <= rareLevelChance && levels.Count > safeLevels)
         {
             selectedPrefab = Random.Range(0, rareLevelPrefabs.Count);
@@ -135,7 +124,7 @@ public class GameController : MonoBehaviour
         if (monsterLevelPrefabs.Count > 0 && randomRoomChance <= monsterLevelChance * (levels.Count * monsterChancePerLevelMultiplier) && levels.Count > safeLevels)
         {
             selectedPrefab = Random.Range(0, monsterLevelPrefabs.Count);
-            generatedFloor = rareLevelPrefabs[selectedPrefab];
+            generatedFloor = monsterLevelPrefabs[selectedPrefab];
             Debug.Log("Monster Level Generated!");
             return generatedFloor;
         }

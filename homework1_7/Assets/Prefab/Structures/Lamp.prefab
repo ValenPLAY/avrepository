@@ -295,7 +295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6b85b41a38f739545baa11f29ef82282, type: 3}
       propertyPath: m_Layer
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 989820036314746074, guid: 6b85b41a38f739545baa11f29ef82282, type: 3}
       propertyPath: m_Layer
@@ -329,6 +329,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6b85b41a38f739545baa11f29ef82282, type: 3}
   m_PrefabInstance: {fileID: 8720710828309463485}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &7880130089404306818
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486850543485254892}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.7670455
+  m_Center: {x: -0.023970366, y: -2.0489864, z: 1.3599945}
 --- !u!82 &7731606165743212503
 AudioSource:
   m_ObjectHideFlags: 0
@@ -425,3 +438,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8619394072671685450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8486850543485254892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9330a6bace11884382efff97947635b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBreakingInRange: 1
+  lampBreakChance: 0.02
+  brokenPrefab: {fileID: 8486850543485254892, guid: e8059a982f368b04bb9443d09b12d9df, type: 3}
+  brakeSoundPrefab: {fileID: 3455985814666020765, guid: 365db2b705ebe15439596bc070f14b1f, type: 3}

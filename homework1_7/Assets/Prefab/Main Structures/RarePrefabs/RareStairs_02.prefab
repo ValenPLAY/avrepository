@@ -411,6 +411,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lamp
       objectReference: {fileID: 0}
+    - target: {fileID: 8619394072671685450, guid: 87149048667cff942b6ce3c3012f11d4, type: 3}
+      propertyPath: lampBreakChance
+      value: 0.9
+      objectReference: {fileID: 0}
     - target: {fileID: 9118814211495208534, guid: 87149048667cff942b6ce3c3012f11d4, type: 3}
       propertyPath: m_RootOrder
       value: 4
