@@ -9,7 +9,7 @@ public class Lamp : MonoBehaviour
 
     [Header("Prefab settings")]
     [SerializeField] GameObject brokenPrefab;
-    [SerializeField] GameObject brakeSoundPrefab;
+    [SerializeField] AudioSource brakeSoundPrefab;
 
 
     private void Awake()
@@ -32,8 +32,8 @@ public class Lamp : MonoBehaviour
         {
             GameObject brokenLamp = Instantiate(brokenPrefab, transform.position, transform.rotation);
             brokenLamp.transform.parent = transform.parent;
-            GameObject playedSound = GameMechanics.playerSound(brakeSoundPrefab, transform.position, 1.0f, 0.3f);
-            Destroy(playedSound, 3);
+            AudioSource playedSound = GameMechanics.playerSound(brakeSoundPrefab, transform.position, 1.0f, 0.3f);
+            Destroy(playedSound.gameObject, 3);
             Destroy(gameObject);
         }
     }

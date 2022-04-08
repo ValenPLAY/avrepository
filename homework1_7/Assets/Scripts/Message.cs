@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Message : MonoBehaviour
+public class Message : Interactable
 {
     public int messageID = 0;
 

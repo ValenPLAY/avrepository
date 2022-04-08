@@ -43,18 +43,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2da120f85c02e04f876569153da7422, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingCell: {fileID: 1731012777623984861, guid: a817c167c40c3ef4690fe08ad0d5427a, type: 3}
+  startingCell: {fileID: 0}
   levelPrefabs:
-  - {fileID: 1731012777623984861, guid: 40f168880df2e9e409677aa4a842eebc, type: 3}
-  - {fileID: 1731012777623984861, guid: 5e3b94c5a80cf494d830b6078b3a48d9, type: 3}
+  - {fileID: -2024007899829872317, guid: 40f168880df2e9e409677aa4a842eebc, type: 3}
+  - {fileID: -2024007899829872317, guid: 5e3b94c5a80cf494d830b6078b3a48d9, type: 3}
   rareLevelPrefabs:
-  - {fileID: 1731012777623984861, guid: c61d89bd560ec7949ba013710fc7a088, type: 3}
-  - {fileID: 1731012777623984861, guid: 1a329efe3e8256a45bcc50a83cb5db4b, type: 3}
-  - {fileID: 1731012777623984861, guid: 2cb563f58736ac44080ba71003cae003, type: 3}
+  - {fileID: -2024007899829872317, guid: c61d89bd560ec7949ba013710fc7a088, type: 3}
+  - {fileID: -2024007899829872317, guid: 1a329efe3e8256a45bcc50a83cb5db4b, type: 3}
+  - {fileID: -2024007899829872317, guid: 2cb563f58736ac44080ba71003cae003, type: 3}
   monsterLevelPrefabs: []
   safeLevels: 0
-  rareLevelChance: 0.2
+  rareLevelChance: 1
   monsterLevelChance: 0.1
   monsterChancePerLevelMultiplier: 1.02
-  preloadedLevelsAmount: 6
+  preloadedLevelsAmount: 3
   levels: []

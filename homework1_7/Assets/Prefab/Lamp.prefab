@@ -453,4 +453,4 @@ MonoBehaviour:
   isBreakingInRange: 1
   lampBreakChance: 0.02
   brokenPrefab: {fileID: 8486850543485254892, guid: e8059a982f368b04bb9443d09b12d9df, type: 3}
-  brakeSoundPrefab: {fileID: 3455985814666020765, guid: 365db2b705ebe15439596bc070f14b1f, type: 3}
+  brakeSoundPrefab: {fileID: -1288712875133379887, guid: 365db2b705ebe15439596bc070f14b1f, type: 3}

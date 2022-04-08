@@ -7,11 +7,6 @@ public class Watch : MonoBehaviour
     [SerializeField] TextMeshPro coordinatesText;
     [SerializeField] int roundNumber = 100;
     [SerializeField] TextMeshPro noteDisplayTMP;
-    // Start is called before the first frame update
-    void Awake()
-    {
-
-    }
 
     private void OnEnable()
     {

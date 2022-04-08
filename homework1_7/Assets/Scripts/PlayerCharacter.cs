@@ -6,41 +6,42 @@ public class PlayerCharacter : MonoBehaviour
     public float movementSpeed = 10f;
     public float health = 100f;
     public float stamina = 100f;
-    private float gravity = 9.8f;
+    public float pickupRange = 1.0f;
+    [SerializeField] float gravity = 9.8f;
+
     private CharacterController controller;
     public int currentLevel;
-    public float pickupRange = 1.0f;
 
     [Header("Camera Settings")]
-    private float lookSensitivity = 2.0f;
-    private float cameraLock;
+    [SerializeField] float lookSensitivity = 2.0f;
+    [SerializeField] float cameraLock = 80.0f;
+    private Vector3 cameraRotation;
 
     [Header("Body Part Settings")]
-    public GameObject upperBody;
-    public GameObject attachmentPoint;
+    [SerializeField] GameObject upperBody;
 
     [Header("Flashlight Settings")]
     public Light flashlight;
-    public GameObject flashlightSoundPrefab;
-    private bool flashlightPressed;
+    [SerializeField] AudioSource flashlightSoundPrefab;
 
     private bool isStunned = false;
 
     [Header("Player Sounds Settings")]
-    public GameObject soundStepPrefab;
+    public AudioSource soundStepPrefab;
     private float timerBetweenStepsDefault = 0.5f;
     private float timerBetweenStepsCurrent;
 
     [Header("Raycast Look")]
-    public LayerMask lookIgnores;
-    private GameObject lookingTarget;
+    [SerializeField] LayerMask lookIgnores;
+    [SerializeField] bool isInPickupRange;
     [SerializeField] float raycastDistance = 20.0f;
+    private GameObject lookingTarget;
 
     [Header("Player Animations")]
     private Animator animator;
 
     [Header("Watch")]
-    public GameObject watchOpenSound;
+    public AudioSource watchOpenSound;
     public Transform watchPosition;
     public GameObject watchPrefab;
     private GameObject currentWatch;
@@ -48,41 +49,29 @@ public class PlayerCharacter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        cameraRotation = upperBody.transform.rotation.eulerAngles;
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
-
         if (flashlight == null) GetComponentInChildren<Light>();
 
         GameController.Instance.FloorCheck(currentLevel);
+        //isStunned = true;
+
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //flashlight.intensity = Random.Range(1.8f, 2.2f);
-        //Debug.Log(isStunned);
-        if (isStunned == false)
+        if (!isStunned)
         {
             Move();
+            VisionCheck();
+            CheckWatch();
+            Interact();
+            Flashlight();
         }
-
-        if (Input.GetButtonDown("Flashlight"))
-        {
-            Debug.Log("Flashlight");
-
-            flashlightPressed = !flashlightPressed;
-            Flashlight(flashlightPressed);
-            GameObject watchSound = GameMechanics.playerSound(flashlightSoundPrefab, transform.position, 1.0f, 0.2f);
-            Destroy(watchSound, 3);
-
-        }
-
-
-        VisionCheck();
         Gravity();
-        CheckWatch();
-
-        //Debug.Log(controller.velocity);
     }
 
     private void VisionCheck()
@@ -91,25 +80,66 @@ public class PlayerCharacter : MonoBehaviour
         RaycastHit target;
         if (Physics.Raycast(lookRay, out target, raycastDistance, ~lookIgnores))
         {
-            Debug.DrawRay(upperBody.transform.position, upperBody.transform.forward * 10.0f, Color.white);
 
-            Ghost spottedGhost = target.collider.GetComponent<Ghost>();
-            if (spottedGhost != null)
-            {
-                spottedGhost.Disappear();
-            }
-            if (target.distance <= pickupRange)
-            {
-                Message foundMessage = target.collider.GetComponent<Message>();
+            isInPickupRange = target.distance <= pickupRange;
 
-                if (foundMessage != null)
+            if (target.collider.gameObject != lookingTarget)
+            {
+
+                lookingTarget = target.collider.gameObject;
+
+                //Debug
+                Debug.Log(lookingTarget.name);
+                Debug.DrawRay(upperBody.transform.position, upperBody.transform.forward * 10.0f, Color.white, 1f);
+
+
+                //Ghost Check
+                Ghost spottedGhost = target.collider.GetComponent<Ghost>();
+                if (spottedGhost != null)
                 {
-                    if (Input.GetKeyDown(KeyCode.E))
-                    {
-                        foundMessage.MessagePickup();
-                    }
+                    spottedGhost.Disappear();
+                }
 
+                //Interactable Check
+                Interactable currentInteractable = lookingTarget.GetComponent<Interactable>();
+                if (currentInteractable != null && isInPickupRange)
+                {
+                    UIController.Instance.DisplayTip(true, currentInteractable.pickupMessageID);
+                }
+                else
+                {
+                    UIController.Instance.DisplayTip(false, 0);
 
+                }
+
+            }
+        }
+    }
+
+    private void Flashlight()
+    {
+        if (Input.GetButtonDown("Flashlight") && flashlight != null)
+        {
+            Debug.Log("Flashlight");
+
+            flashlight.enabled = !flashlight.enabled;
+
+            AudioSource watchSound = GameMechanics.playerSound(flashlightSoundPrefab, transform.position, 1.0f, 0.2f);
+            Destroy(watchSound.gameObject, 3);
+
+        }
+    }
+
+    private void Interact()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && lookingTarget != null)
+        {
+            Message foundMessage = lookingTarget.GetComponent<Message>();
+            if (foundMessage != null)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    foundMessage.MessagePickup();
                 }
             }
         }
@@ -143,19 +173,19 @@ public class PlayerCharacter : MonoBehaviour
             currentWatch.SetActive(true);
         }
 
-        GameObject watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, 1.0f, 0.2f);
+        AudioSource watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, 1.0f, 0.2f);
         watchSound.transform.parent = transform;
 
-        Destroy(watchSound, 3);
+        Destroy(watchSound.gameObject, 3);
     }
 
     public void UnloadWatch()
     {
         if (currentWatch != null) currentWatch.SetActive(false);
 
-        GameObject watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, -1.3f, 0.2f);
+        AudioSource watchSound = GameMechanics.playerSound(watchOpenSound, transform.position, -1.3f, 0.2f);
         watchSound.transform.parent = transform;
-        Destroy(watchSound, 3);
+        Destroy(watchSound.gameObject, 3);
     }
 
     private void OnTriggerEnter(Collider trigger)
@@ -174,65 +204,46 @@ public class PlayerCharacter : MonoBehaviour
 
     private void Move()
     {
+        //User Inputs
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
-        float rotationX = Input.GetAxis("Mouse X");
-        float rotationY = Input.GetAxis("Mouse Y");
+        float mouseX = Input.GetAxis("Mouse X") * lookSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * lookSensitivity;
 
+        //Animator
+        animator.SetBool("isWalking", vertical != 0.0f || horizontal != 0.0f);
 
-
-        if (vertical != 0.0f || horizontal != 0.0f)
-        {
-            animator.SetBool("isWalking", true);
-        }
-        else
-        {
-            animator.SetBool("isWalking", false);
-        }
-
+        //Movement & Movement Modifiers
         var actualMovementSpeed = movementSpeed;
         Vector3 charMovement = new Vector3(horizontal * actualMovementSpeed, 0.0f, vertical * actualMovementSpeed);
-
         controller.Move(transform.TransformDirection(charMovement) * Time.deltaTime);
-        var actualCameraRotate = rotationX * lookSensitivity;
-        transform.Rotate(Vector3.up, actualCameraRotate);
-        if (Mathf.Abs(cameraLock + rotationY) <= 80)
-        {
-            cameraLock += rotationY;
-            upperBody.transform.Rotate(Vector3.left, rotationY);
-            //mainCamera.transform.Rotate(Vector3.left, rotationY);
-        }
 
+        //Body Rotation
+        transform.Rotate(Vector3.up, mouseX);
+
+        //Camera Rotation
+        cameraRotation.y += mouseX;
+        cameraRotation.x -= mouseY;
+        cameraRotation.x = Mathf.Clamp(cameraRotation.x, -cameraLock, cameraLock);
+        upperBody.transform.rotation = Quaternion.Euler(cameraRotation);
+
+        //Step Sounds
         if (controller.velocity.magnitude > 0.2f && timerBetweenStepsCurrent <= 0)
         {
-            //GameObject stepSound = Instantiate(soundStepPrefab, transform.position, transform.rotation);
-            GameObject stepSound = GameMechanics.playerSound(soundStepPrefab, transform.position, 1.0f, 0.3f);
-            Destroy(stepSound, 3);
+            AudioSource stepSound = GameMechanics.playerSound(soundStepPrefab, transform.position, 1.0f, 0.3f);
+            Destroy(stepSound.gameObject, 3);
             timerBetweenStepsCurrent = timerBetweenStepsDefault;
         }
-
-        if (timerBetweenStepsCurrent > 0)
+        else if (timerBetweenStepsCurrent > 0)
         {
             timerBetweenStepsCurrent -= Time.deltaTime * controller.velocity.magnitude;
         }
-        //Debug.Log(controller.velocity.magnitude);
+
     }
 
     private void Gravity()
     {
-        //if (controller.isGrounded == false) { 
         Vector3 charGravity = new Vector3(0.0f, -gravity, 0.0f);
         controller.Move(transform.TransformDirection(charGravity) * Time.deltaTime);
-        //}
-
-    }
-
-    private void Flashlight(bool flswitch)
-    {
-        if (flashlight)
-        {
-            flashlight.enabled = !flashlight.enabled;
-
-        }
     }
 }

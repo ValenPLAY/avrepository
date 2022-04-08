@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8475357746201213886
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8475357746201213884}
+  - component: {fileID: 8475357746201213887}
+  m_Layer: 0
+  m_Name: MessageController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8475357746201213884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475357746201213886}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.36948904, y: 1.222422, z: -1.0848187}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8475357746201213887
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8475357746201213886}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a92609572f2715d418a1e9ed11811e38, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentMessage: 0
+  messagesTextList:
+  - No messages to display.
+  - "Item #: SCP-087\r\n\r\nObject Class: Euclid\r\n\r\nSpecial Containment Procedures:
+    SCP-087 is located on the campus of [REDACTED]. The doorway leading to SCP-087
+    is constructed of reinforced steel with an electro-release lock mechanism. It
+    has been disguised to resemble a janitorial closet consistent with the design
+    of the building. The lock mechanism on the doorknob will not release unless \u2588\u2588
+    volts are applied in conjunction with counter-clockwise rotation of the key.
+    The inside of the door is lined with 6 centimeters of industrial foam padding.\r\n\r\nDue
+    to the results of the final exploration (see Document 087-IV), no personnel are
+    permitted access to SCP-087."
+  - 'Description: SCP-087 is an unlit platform staircase. Stairs descend on a 38
+    degree angle for 13 steps before reaching a semicircular platform of approximately
+    3 meters in diameter. Descent direction rotates 180 degrees at each platform.
+    The design of SCP-087 limits subjects to a visual range of approximately 1.5
+    flights. A light source is required for any subjects exploring SCP-087, as there
+    are no lighting fixtures or windows present. Lighting sources brighter than 75
+    watts have shown to be ineffective, as SCP-087 seems to absorb excess light.'
+  specialMessagesList: []
+  playerMessages: []

@@ -4,12 +4,12 @@ using UnityEngine;
 public class GameController : Singleton<GameController>
 {
     [Header("Starting level")]
-    public GameObject startingCell;
+    public Floor startingCell;
 
     [Header("Generated level lists")]
-    public List<GameObject> levelPrefabs = new List<GameObject>();
-    public List<GameObject> rareLevelPrefabs = new List<GameObject>();
-    public List<GameObject> monsterLevelPrefabs = new List<GameObject>();
+    public List<Floor> levelPrefabs = new List<Floor>();
+    public List<Floor> rareLevelPrefabs = new List<Floor>();
+    public List<Floor> monsterLevelPrefabs = new List<Floor>();
 
     [Header("Generation Settings")]
     public int safeLevels = 10;
@@ -21,7 +21,7 @@ public class GameController : Singleton<GameController>
 
 
     [Header("Current levels")]
-    public List<GameObject> levels = new List<GameObject>();
+    public List<Floor> levels = new List<Floor>();
 
 
 
@@ -39,7 +39,7 @@ public class GameController : Singleton<GameController>
     {
         if (currentLevel + preloadedLevelsAmount >= levels.Count)
         {
-            levels.Add(new GameObject());
+            levels.Add(new Floor());
             FloorCreate(levels.Count - 1, currentLevel);
         }
 
@@ -72,9 +72,8 @@ public class GameController : Singleton<GameController>
 
     public void FloorCreate(int createdLevelID, int currentLevel)
     {
-        //Debug.Log("Count: " + levels.Count);
-        GameObject newLevel = Instantiate(createdFloor());
-        //levels.Add(newLevel);
+        Floor newLevel = Instantiate(createdFloor());
+
         if (createdLevelID > levels.Count - 1)
         {
             levels.Add(newLevel);
@@ -85,31 +84,30 @@ public class GameController : Singleton<GameController>
             levels[createdLevelID] = newLevel;
         }
 
-        Floor level = levels[createdLevelID].GetComponent<Floor>();
+        //Floor level = levels[createdLevelID].GetComponent<Floor>();
         if (currentLevel < createdLevelID)
         {
-            level.transform.position = levels[createdLevelID - 1].GetComponent<Floor>().botPoint.transform.position;
-            level.transform.position -= level.topPoint.transform.localPosition;
+            newLevel.transform.position = levels[createdLevelID - 1].botPoint.transform.position;
+            newLevel.transform.position -= newLevel.topPoint.transform.localPosition;
         }
         else
         {
-            level.transform.position = levels[createdLevelID + 1].GetComponent<Floor>().topPoint.transform.position;
-            level.transform.position -= level.botPoint.transform.localPosition;
+            newLevel.transform.position = levels[createdLevelID + 1].topPoint.transform.position;
+            newLevel.transform.position -= newLevel.botPoint.transform.localPosition;
         }
-        level.floorNumber.text = createdLevelID.ToString();
-        level.levelNumber = createdLevelID;
+        newLevel.floorNumber.text = createdLevelID.ToString();
+        newLevel.levelNumber = createdLevelID;
     }
 
     public void FloorDestroy(int destroyedLevelID)
     {
-        Destroy(levels[destroyedLevelID]);
-        //Debug.Log(levels[destroyedLevelID]);
+        Destroy(levels[destroyedLevelID].gameObject);
     }
 
-    GameObject createdFloor()
+    Floor createdFloor()
     {
         int selectedPrefab;
-        GameObject generatedFloor;
+        Floor generatedFloor;
 
         float randomRoomChance = Random.Range(0.0f, 1.0f);
         if (rareLevelPrefabs.Count > 0 && randomRoomChance <= rareLevelChance && levels.Count > safeLevels)
