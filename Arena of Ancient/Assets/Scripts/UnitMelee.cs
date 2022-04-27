@@ -21,6 +21,8 @@ public class UnitMelee : Unit
         if (Vector3.Distance(GameController.Instance.selectedHero.transform.position, agent.destination) >= retargetDistance)
         {
             agent.SetDestination(GameController.Instance.selectedHero.transform.position);
+            agent.isStopped = true;
+            agent.isStopped = false;
         }
 
     }
