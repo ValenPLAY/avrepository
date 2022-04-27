@@ -2,6 +2,11 @@ using UnityEngine;
 
 public class Hero : Unit
 {
+    [Header("Movement")]
+    protected Vector3 movementVector;
+    protected float actualMovementSpeed;
+    protected float gravity = -9.8f;
+
     protected CharacterController controller;
     [SerializeField] GameObject upperBody;
     [SerializeField] GameObject lowerBody;
@@ -10,6 +15,7 @@ public class Hero : Unit
     protected override void Awake()
     {
         base.Awake();
+        movementVector.y = gravity;
         controller = GetComponent<CharacterController>();
 
     }

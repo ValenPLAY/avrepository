@@ -6,6 +6,10 @@ public class GameController : Singleton<GameController>
     public Hero selectedHero;
     public Vector3 playerWorldMousePos;
     public Camera mainCamera;
+    [Header("Global Variables")]
+    public float gravity = -9.8f;
+    public float difficulty = 1.0f;
+
     // Start is called before the first frame update
     void Awake()
     {

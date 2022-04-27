@@ -11,19 +11,14 @@ public class Unit : MonoBehaviour
     protected float currentHealth;
     public float damage;
     public float attackSpeed;
-
-    [Header("Movement")]
-    protected Vector3 movementVector;
     public float movementSpeed;
-    protected float actualMovementSpeed;
 
-    protected float gravity = -9.8f;
 
 
 
     protected virtual void Awake()
     {
-        movementVector.y = gravity;
+
     }
 
     void Start()
