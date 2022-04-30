@@ -85,8 +85,10 @@ public class Unit : MonoBehaviour
 
     public virtual void TakeDamage(float incomingDamage)
     {
-        incomingDamage -= armorActual;
-        if (incomingDamage < 0) incomingDamage = 0;
+        incomingDamage = Mathf.Clamp(incomingDamage - armorActual, 0, damageActual);
+        /*incomingDamage -= armorActual;
+        
+        if (incomingDamage < 0) incomingDamage = 0;*/
 
         currentHealth -= incomingDamage;
 
@@ -124,6 +126,11 @@ public class Unit : MonoBehaviour
     public void DealDamage(Unit target, float damageAmount)
     {
         target.TakeDamage(damageAmount);
+    }
+
+    public void DealDamage(Unit target)
+    {
+        target.TakeDamage(damageActual);
     }
 
     public void HealFlat(float healAmount)
