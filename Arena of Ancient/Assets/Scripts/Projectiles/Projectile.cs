@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [Header ("Projectile Info")]
+    [Header("Projectile Info")]
     public Unit projectileOwner;
 
 
@@ -16,6 +14,8 @@ public class Projectile : MonoBehaviour
 
     protected BoxCollider projectileCollider;
     protected Rigidbody projectileRigidBody;
+
+    [SerializeField] protected bool isDestroyOnHit;
     // Start is called before the first frame update
     protected virtual void Awake()
     {
@@ -24,10 +24,10 @@ public class Projectile : MonoBehaviour
 
         projectileTimeToDestroyCurrent = projectileTimeToDestroy;
         Physics.IgnoreCollision(projectileCollider, projectileOwner.GetComponent<CharacterController>());
-
+        //projectileRigidBody.AddForce(transform.forward * projectileSpeed);
     }
 
-    
+
 
     protected virtual void OnEnable()
     {
@@ -35,7 +35,8 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collided with: " + collision.gameObject.name + " - " + collision.collider);
+        //Debug.Log("Collided with: " + collision.gameObject.name + " - " + collision.collider);
+        if (isDestroyOnHit) DestroyProjectile();
     }
 
     // Update is called once per frame
@@ -51,10 +52,6 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
-        Unit hitUnit = other.gameObject.GetComponent<Unit>();
-        if (hitUnit != null && hitUnit != projectileOwner)
-        {
-            hitUnit.TakeDamage(projectileDamage);
-        }
+
     }
 }

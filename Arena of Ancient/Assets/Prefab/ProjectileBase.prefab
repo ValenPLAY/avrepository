@@ -129,5 +129,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileOwner: {fileID: 0}
   projectileDamage: 0
-  projectileSpeed: 0
-  projectileTimeToDestroy: 0
+  projectileSpeed: 500
+  projectileTimeToDestroy: 3
+  isDestroyOnHit: 1

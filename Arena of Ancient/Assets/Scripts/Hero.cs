@@ -1,33 +1,37 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Hero : Unit
 {
-    [Header("Movement")]
-    protected Vector3 movementVector;
-    protected float actualMovementSpeed;
-    protected float gravity = -9.8f;
-    
+    [Header("Hero Abilities")]
+    public List<Ability> abilities = new List<Ability>();
+
+    [Header("Hero Body Parts")]
     [SerializeField] protected GameObject upperBody;
+    protected Quaternion defaultUpperBodyRotation;
     [SerializeField] protected GameObject lowerBody;
     [SerializeField] protected float rotationSpeed = 500.0f;
-
     protected CharacterController characterController;
 
     protected override void Awake()
     {
         base.Awake();
-        movementVector.y = gravity;
+        defaultUpperBodyRotation = transform.rotation;
         characterController = GetComponent<CharacterController>();
 
     }
 
     protected override void Update()
     {
-        movementVector.x = Input.GetAxis("Horizontal");
-        movementVector.z = Input.GetAxis("Vertical");
-        actualMovementSpeed = movementSpeed;
+        if (unitState == state.normal) MoveHero(GameController.Instance.inputVector);
+        base.Update();
+    }
 
-        characterController.Move(movementVector * Time.deltaTime * actualMovementSpeed);
+    protected void MoveHero(Vector3 movementVector)
+    {
+        movementVector.y = Physics.gravity.y;
+        //movementSpeedActual = movementSpeed;
+        characterController.Move(movementVector * Time.deltaTime * movementSpeedActual);
 
         if (lowerBody != null && movementVector != Vector3.zero)
         {
@@ -38,19 +42,7 @@ public class Hero : Unit
         if (upperBody != null)
         {
             upperBody.transform.LookAt(GameController.Instance.playerWorldMousePos);
-            
+            //upperBody.transform.rotation = Quaternion.Euler(Vector3.zero);
         }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            Attack();
-        }
-
-        base.Update();
-    }
-
-    protected override void Attack()
-    {
-
     }
 }

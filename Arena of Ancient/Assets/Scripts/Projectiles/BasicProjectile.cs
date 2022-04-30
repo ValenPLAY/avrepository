@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BasicProjectile : Projectile
@@ -13,6 +11,18 @@ public class BasicProjectile : Projectile
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+
+        Unit hitUnit = other.gameObject.GetComponent<Unit>();
+        if (hitUnit != null && hitUnit != projectileOwner)
+        {
+            hitUnit.TakeDamage(projectileDamage);
+            if (isDestroyOnHit) DestroyProjectile();
+        }
     }
 }
