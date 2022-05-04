@@ -13,6 +13,9 @@ public class Hero : Unit
     [SerializeField] protected float rotationSpeed = 500.0f;
     protected CharacterController characterController;
 
+    [Header("Hero Upgrades")]
+    public int upgradePoints;
+
     protected override void Awake()
     {
         base.Awake();

@@ -85,7 +85,8 @@ public class Unit : MonoBehaviour
 
     public virtual void TakeDamage(float incomingDamage)
     {
-        incomingDamage = Mathf.Clamp(incomingDamage - armorActual, 0, damageActual);
+        Debug.Log("Incoming Damage: " + incomingDamage);
+        incomingDamage = Mathf.Clamp(incomingDamage - armorActual, 0, incomingDamage);
         /*incomingDamage -= armorActual;
         
         if (incomingDamage < 0) incomingDamage = 0;*/
@@ -96,8 +97,6 @@ public class Unit : MonoBehaviour
         {
             Death();
         }
-
-
     }
 
     protected virtual void Death()
@@ -131,6 +130,7 @@ public class Unit : MonoBehaviour
     public void DealDamage(Unit target)
     {
         target.TakeDamage(damageActual);
+        Debug.Log(name + " dealt " + damageActual + " damage to " + target);
     }
 
     public void HealFlat(float healAmount)

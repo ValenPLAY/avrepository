@@ -27,8 +27,10 @@ public class GameController : Singleton<GameController>
     public int currentWave = 1;
     public float difficulty = 1.0f;
     public List<Unit> enemiesOnMap = new List<Unit>();
-    public List<Unit> enemiesToSpawn = new List<Unit>();
+    //public List<Unit> enemiesToSpawn = new List<Unit>();
+
     public Unit waveEnemy;
+    public int enemiesToSpawnNumber;
     public int enemiesPerWave = 1;
     public int enemiesStartCount = 1;
 
@@ -36,7 +38,7 @@ public class GameController : Singleton<GameController>
     private float inBetweenWaveTimerCurrent;
 
     [Header("Enemy Spawn Variables")]
-    public float inBetweenEnemyTimer;
+    public float inBetweenEnemyTimer = 3.0f;
     private float inBetweenEnemyTimerCurrent;
     private Vector3 spawnPoint;
 
@@ -45,8 +47,10 @@ public class GameController : Singleton<GameController>
     public Unit targetUnit;
 
     [Header("Prefab Variables")]
+    public Arena arena;
     public InfoPanel infoPanelPrefab;
     private InfoPanel currentInfoPanel;
+
 
     // Start is called before the first frame update
     void Awake()
@@ -57,6 +61,13 @@ public class GameController : Singleton<GameController>
         {
             selectedHero = FindObjectOfType<Hero>();
         }
+
+        if (arena == null)
+        {
+            GameObject.FindGameObjectWithTag("Arena");
+        }
+
+        enemiesToSpawnNumber = enemiesStartCount;
     }
 
     // Update is called once per frame
@@ -65,14 +76,38 @@ public class GameController : Singleton<GameController>
         PlayerCameraUpdate();
         PlayerInput();
 
+
+        if (currentGameState == gameState.inGame)
+        {
+            if (enemiesToSpawnNumber > 0)
+            {
+                if (inBetweenEnemyTimerCurrent <= 0)
+                {
+                    EnemySpawnController.Instance.SpawnEnemy(waveEnemy);
+                    inBetweenEnemyTimerCurrent = inBetweenEnemyTimer;
+                    enemiesToSpawnNumber--;
+                }
+                else
+                {
+                    inBetweenEnemyTimerCurrent -= Time.deltaTime;
+                }
+
+            }
+
+
+
+            if (enemiesOnMap.Count + enemiesToSpawnNumber == 0)
+            {
+                EndWave();
+            }
+
+        }
+
+        // Next Wave Check
         if (currentGameState == gameState.betweenWave)
         {
             inBetweenWaveTimerCurrent -= Time.deltaTime;
-        }
-
-        if (inBetweenWaveTimerCurrent <= 0 && currentGameState == gameState.betweenWave)
-        {
-            NextWave();
+            if (inBetweenWaveTimerCurrent <= 0) NextWave();
         }
 
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * 0.4f);
@@ -81,8 +116,10 @@ public class GameController : Singleton<GameController>
     //Wave Specifics
     void EndWave()
     {
+        Debug.Log("Wave " + currentWave + " ended!");
         currentGameState = gameState.betweenWave;
         inBetweenWaveTimerCurrent = inBetweenWaveTimer;
+        selectedHero.upgradePoints++;
 
     }
 
@@ -90,6 +127,9 @@ public class GameController : Singleton<GameController>
     {
         currentGameState = gameState.inGame;
         currentWave++;
+        enemiesToSpawnNumber = enemiesStartCount + (currentWave * enemiesPerWave);
+        Debug.Log("Wave " + currentWave + " began!");
+
     }
 
     public void SetWave(int specificWave)
@@ -143,6 +183,11 @@ public class GameController : Singleton<GameController>
         if (Input.GetButtonDown("Fire1"))
         {
             selectedHero.OrderAttack();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            EnemySpawnController.Instance.SpawnEnemy(waveEnemy);
         }
     }
 

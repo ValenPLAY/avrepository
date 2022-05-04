@@ -7,19 +7,19 @@ public class InfoPanel : MonoBehaviour
     public SpriteRenderer unitHealthSprite;
     private Unit infoUnit;
     [SerializeField] Vector3 infoOffset;
+    Vector3 defaultRotation;
 
 
     private void Awake()
     {
         UpdateInfo();
-
         transform.position += infoOffset;
-        if (Camera.main != null) transform.LookAt(Camera.main.transform);
+        //if (Camera.main != null) transform.LookAt(Camera.main.transform);
     }
 
     private void Update()
     {
-        if (Camera.main != null) transform.LookAt(Camera.main.transform);
+        //if (Camera.main != null) transform.LookAt(Camera.main.transform);
     }
 
     public void UpdateInfo()

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Hero
   - Projectile
+  - Arena
   layers:
   - Default
   - TransparentFX
@@ -16,7 +17,7 @@ TagManager:
   - Unit
   - Projectile
   - UnitModel
-  - 
+  - Hit Zone
   - 
   - 
   - 

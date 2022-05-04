@@ -36,17 +36,20 @@ public class EnemyMelee : Unit
                 Retarget();
                 retargetDurationCurrent = retargetDuration;
             }
+
             retargetDurationCurrent -= Time.deltaTime;
         }
         else
         {
             targetMovedDistance = Vector3.Distance(currentTarget.transform.position, agent.destination);
+
             if (targetMovedDistance >= retargetMovingTargetDistance)
             {
                 agent.SetDestination(GameController.Instance.selectedHero.transform.position);
             }
 
             distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
+
             if (distanceTillTarget <= attackRange)
             {
                 agent.ResetPath();
@@ -63,5 +66,11 @@ public class EnemyMelee : Unit
     protected override void Attack()
     {
         base.Attack();
+    }
+
+    protected override void Death()
+    {
+        GameController.Instance.enemiesOnMap.Remove(this);
+        base.Death();
     }
 }
