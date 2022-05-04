@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -22,6 +23,16 @@ public class Unit : MonoBehaviour
     protected float healthActual;
 
     protected float currentHealth;
+    public float CurrentHealth 
+    { 
+        get => currentHealth; 
+
+        protected set 
+        { 
+            currentHealth = value;
+            onHealthChangedEvent?.Invoke(currentHealth, healthActual);
+        } 
+    }
 
     public float healthRegeneration = 0.0f;
     public float healthRegenerationBonus;
@@ -57,7 +68,7 @@ public class Unit : MonoBehaviour
     protected CapsuleCollider unitColliderCapsule;
     protected Animator unitAnimator;
 
-
+    public Action<float, float> onHealthChangedEvent;
 
 
     protected virtual void Awake()
@@ -91,12 +102,13 @@ public class Unit : MonoBehaviour
         
         if (incomingDamage < 0) incomingDamage = 0;*/
 
-        currentHealth -= incomingDamage;
+        CurrentHealth -= incomingDamage;
 
-        if (currentHealth <= 0)
+        if (CurrentHealth <= 0)
         {
             Death();
         }
+
     }
 
     protected virtual void Death()
@@ -143,6 +155,16 @@ public class Unit : MonoBehaviour
     {
         currentHealth *= healAmountPercentage;
         StatUpdate();
+    }
+
+    public float GetMaximumHealth()
+    {
+        return healthActual;
+    }
+
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
     }
 
     protected virtual void StatUpdate()

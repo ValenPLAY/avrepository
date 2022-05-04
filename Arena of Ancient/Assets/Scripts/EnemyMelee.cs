@@ -4,6 +4,7 @@ using UnityEngine.AI;
 public class EnemyMelee : Unit
 {
     GameObject currentTarget;
+    Vector3 currentTargetPosition;
     NavMeshAgent agent;
     [SerializeField] float retargetMovingTargetDistance = 1.0f;
     [SerializeField] float retargetDuration = 2.0f;
@@ -39,16 +40,16 @@ public class EnemyMelee : Unit
 
             retargetDurationCurrent -= Time.deltaTime;
         }
-        else
+        if (currentTarget != null)
         {
             targetMovedDistance = Vector3.Distance(currentTarget.transform.position, agent.destination);
 
             if (targetMovedDistance >= retargetMovingTargetDistance)
             {
-                agent.SetDestination(GameController.Instance.selectedHero.transform.position);
+                agent.SetDestination(currentTarget.transform.position);
             }
 
-            distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
+            distanceTillTarget = Vector3.Distance(currentTargetPosition, transform.position);
 
             if (distanceTillTarget <= attackRange)
             {
@@ -60,7 +61,13 @@ public class EnemyMelee : Unit
 
     protected virtual void Retarget()
     {
-        currentTarget = GameController.Instance.selectedHero.gameObject;
+        if (GameController.Instance.selectedHero != null)
+        {
+            currentTarget = GameController.Instance.selectedHero.gameObject;
+            currentTargetPosition = currentTarget.transform.position;
+        }
+        
+        
     }
 
     protected override void Attack()

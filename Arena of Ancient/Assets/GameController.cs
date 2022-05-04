@@ -152,7 +152,7 @@ public class GameController : Singleton<GameController>
                 {
                     targetUnit = lookingAtUnit;
                     playerWorldMousePos = targetUnit.transform.position;
-                    currentInfoPanel = SpawnInfoPanel(targetUnit);
+                    //currentInfoPanel = SpawnInfoPanel(targetUnit);
                     Debug.Log("Looking at: " + targetUnit.gameObject.name);
                 }
                 else
@@ -187,7 +187,8 @@ public class GameController : Singleton<GameController>
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            EnemySpawnController.Instance.SpawnEnemy(waveEnemy);
+            //EnemySpawnController.Instance.SpawnEnemy(waveEnemy);
+            selectedHero.TakeDamage(1);
         }
     }
 
