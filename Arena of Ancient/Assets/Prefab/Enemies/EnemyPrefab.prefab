@@ -62,7 +62,7 @@ GameObject:
   m_Layer: 6
   m_Name: EnemyPrefab
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: e0d317118c615d84d8c557c6421ee2fa, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -92,7 +92,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.68974143
+  m_Radius: 1.5
   m_Height: 2.42
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -138,15 +138,17 @@ MonoBehaviour:
   healthRegenerationBonus: 0
   armor: 0
   armorBonus: 0
-  damage: 0
+  damage: 1
   damageBonus: 0
-  attackSpeed: 0
+  attackSpeed: 3
   attackSpeedBonus: 1
   attackRange: 5
   movementSpeed: 2
   movementSpeedBonus: 0
   retargetMovingTargetDistance: 1
   retargetDuration: 2
+  healthIncreasePerWave: 0
+  damageIncreasePerWave: 0
 --- !u!1001 &8262870698804825683
 PrefabInstance:
   m_ObjectHideFlags: 0

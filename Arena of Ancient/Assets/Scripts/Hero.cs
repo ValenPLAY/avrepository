@@ -7,6 +7,7 @@ public class Hero : Unit
     public List<Ability> abilities = new List<Ability>();
 
     [Header("Hero Body Parts")]
+    [SerializeField] protected GameObject unitModel;
     [SerializeField] protected GameObject upperBody;
     protected Quaternion defaultUpperBodyRotation;
     [SerializeField] protected GameObject lowerBody;
@@ -19,9 +20,16 @@ public class Hero : Unit
     protected override void Awake()
     {
         base.Awake();
+        GameController.Instance.waveFinishedEvent += GainSkillPoint;
         defaultUpperBodyRotation = transform.rotation;
         characterController = GetComponent<CharacterController>();
 
+    }
+
+    protected void GainSkillPoint()
+    {
+        Debug.Log(name + " gained a Skill Point!");
+        upgradePoints++;
     }
 
     protected override void Update()
@@ -46,6 +54,12 @@ public class Hero : Unit
         {
             upperBody.transform.LookAt(GameController.Instance.playerWorldMousePos);
             //upperBody.transform.rotation = Quaternion.Euler(Vector3.zero);
+        }
+
+        if (unitModel != null && lowerBody == null && upperBody == null)
+        {
+            unitModel.transform.LookAt(GameController.Instance.playerWorldMousePos);
+
         }
     }
 }

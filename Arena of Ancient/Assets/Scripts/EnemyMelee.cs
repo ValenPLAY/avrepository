@@ -3,14 +3,19 @@ using UnityEngine.AI;
 
 public class EnemyMelee : Unit
 {
-    GameObject currentTarget;
+    Unit currentTarget;
     Vector3 currentTargetPosition;
     NavMeshAgent agent;
+    [Header("Path Finding Options")]
     [SerializeField] float retargetMovingTargetDistance = 1.0f;
     [SerializeField] float retargetDuration = 2.0f;
     protected float retargetDurationCurrent;
     protected float distanceTillTarget;
     protected float targetMovedDistance;
+
+    [Header("Difficulty Scaling Options")]
+    [SerializeField] float healthIncreasePerWave;
+    [SerializeField] float damageIncreasePerWave;
 
     // Start is called before the first frame update
     override protected void Awake()
@@ -49,7 +54,7 @@ public class EnemyMelee : Unit
                 agent.SetDestination(currentTarget.transform.position);
             }
 
-            distanceTillTarget = Vector3.Distance(currentTargetPosition, transform.position);
+            distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
 
             if (distanceTillTarget <= attackRange)
             {
@@ -57,22 +62,36 @@ public class EnemyMelee : Unit
                 OrderAttack();
             }
         }
+
+        base.Update();
     }
 
     protected virtual void Retarget()
     {
         if (GameController.Instance.selectedHero != null)
         {
-            currentTarget = GameController.Instance.selectedHero.gameObject;
-            currentTargetPosition = currentTarget.transform.position;
+            currentTarget = GameController.Instance.selectedHero;
+            //currentTargetPosition = currentTarget.transform.position;
         }
-        
-        
+
+
     }
 
     protected override void Attack()
     {
         base.Attack();
+        if (unitAnimator != null)
+        {
+
+        }
+        else
+        {
+            distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
+            if (distanceTillTarget <= attackRange)
+            {
+                DealDamage(currentTarget);
+            }
+        }
     }
 
     protected override void Death()

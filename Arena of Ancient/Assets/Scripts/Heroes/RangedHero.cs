@@ -37,11 +37,11 @@ public class RangedHero : Hero
     {
         if (isInstant)
         {
-            GameController.Instance.SpawnProjectile(targetPosition, this, unitProjectile, damageActual);
+            SpawnController.Instance.SpawnProjectile(targetPosition, this, unitProjectile, damageActual);
         }
         else
         {
-            GameController.Instance.SpawnProjectile(firingPoint.position, targetPosition, this, unitProjectile, damageActual);
+            SpawnController.Instance.SpawnProjectile(firingPoint.position, targetPosition, this, unitProjectile, damageActual);
         }
     }
 }

@@ -323,9 +323,11 @@ MonoBehaviour:
   movementSpeed: 5
   movementSpeedBonus: 0
   abilities: []
+  unitModel: {fileID: 6560078859746504412}
   upperBody: {fileID: 0}
   lowerBody: {fileID: 0}
   rotationSpeed: 500
+  upgradePoints: 0
   hitPrefab: {fileID: 0}
 --- !u!1 &6608941555693851646
 GameObject:
@@ -674,6 +676,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
+--- !u!1 &6560078859746504412 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1500939411536426, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}
+  m_PrefabInstance: {fileID: 6561535680710268150}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6566198814055972132 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4665124114459090, guid: 274c4c35ed05ea14c87492064b3cadfd, type: 3}

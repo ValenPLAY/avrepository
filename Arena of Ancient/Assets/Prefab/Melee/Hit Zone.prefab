@@ -98,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f444382bd1552b47ab5d840922fe73b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitZoneDuration: 0.5
+  hitZoneDuration: 0.2
   hitZoneDurationCurrent: 0
 --- !u!54 &-6982359455805625371
 Rigidbody:

@@ -21,18 +21,18 @@ public class Unit : MonoBehaviour
     public float health = 10.0f;
     public float healthBonus;
     protected float healthActual;
-
     protected float currentHealth;
-    public float CurrentHealth 
-    { 
-        get => currentHealth; 
+    public float CurrentHealth
+    {
+        get => currentHealth;
 
-        protected set 
-        { 
+        protected set
+        {
             currentHealth = value;
             onHealthChangedEvent?.Invoke(currentHealth, healthActual);
-        } 
+        }
     }
+    public Action<float, float> onHealthChangedEvent;
 
     public float healthRegeneration = 0.0f;
     public float healthRegenerationBonus;
@@ -47,6 +47,17 @@ public class Unit : MonoBehaviour
     public float damage = 1.0f;
     public float damageBonus;
     protected float damageActual;
+    public float Damage
+    {
+        get => damage;
+
+        protected set
+        {
+            damage = value;
+            onDamageChangeValue?.Invoke(damage);
+        }
+    }
+    public Action<float> onDamageChangeValue;
 
     public float attackSpeed = 1.0f;
     public float attackSpeedBonus = 1.0f;
@@ -68,7 +79,7 @@ public class Unit : MonoBehaviour
     protected CapsuleCollider unitColliderCapsule;
     protected Animator unitAnimator;
 
-    public Action<float, float> onHealthChangedEvent;
+
 
 
     protected virtual void Awake()
@@ -81,6 +92,8 @@ public class Unit : MonoBehaviour
 
         currentHealth = healthActual;
         unitState = state.normal;
+
+        gameObject.name = unitName;
     }
 
     protected virtual void Attack()
@@ -92,16 +105,16 @@ public class Unit : MonoBehaviour
     {
         if (currentHealth <= healthActual && healthRegenerationActual > 0) currentHealth += Time.deltaTime * healthRegenerationActual;
         if (attackCooldownCurrent > 0) attackCooldownCurrent -= Time.deltaTime;
+        if (healthRegenerationActual > 0 && CurrentHealth <= healthActual)
+        {
+            CurrentHealth += healthRegenerationActual * Time.deltaTime;
+        }
     }
 
     public virtual void TakeDamage(float incomingDamage)
     {
         Debug.Log("Incoming Damage: " + incomingDamage);
         incomingDamage = Mathf.Clamp(incomingDamage - armorActual, 0, incomingDamage);
-        /*incomingDamage -= armorActual;
-        
-        if (incomingDamage < 0) incomingDamage = 0;*/
-
         CurrentHealth -= incomingDamage;
 
         if (CurrentHealth <= 0)
