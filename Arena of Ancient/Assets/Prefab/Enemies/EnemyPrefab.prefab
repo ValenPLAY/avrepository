@@ -1533,9 +1533,9 @@ MonoBehaviour:
   armorBonus: 0
   damage: 1
   damageBonus: 0
-  attackSpeed: 3
+  attackSpeed: 1
   attackSpeedBonus: 1
-  attackRange: 5
+  attackRange: 3
   movementSpeed: 2
   movementSpeedBonus: 0
   retargetMovingTargetDistance: 1

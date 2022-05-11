@@ -9,6 +9,7 @@ public class GameController : Singleton<GameController>
         inGame,
         paused,
         betweenWave,
+        defeat,
     }
 
     gameState currentGameState = gameState.inGame;
@@ -93,6 +94,11 @@ public class GameController : Singleton<GameController>
             GameObject.FindGameObjectWithTag("Arena");
         }
 
+        if (selectedHero != null)
+        {
+            selectedHero.onUnitDeathEvent += DeathEndgame;
+        }
+
         enemiesToSpawnNumber = enemiesStartCount;
     }
 
@@ -134,20 +140,20 @@ public class GameController : Singleton<GameController>
 
         }
 
-        if (currentGameState == gameState.paused && Time.timeScale > 0)
-        {
-            float timeDecreaseValue = 0.005f;
-            if (Time.timeScale < timeDecreaseValue)
-            {
-                Time.timeScale = 0;
-            }
-            else
-            {
-                Time.timeScale -= timeDecreaseValue;
-            }
+        //if (currentGameState == gameState.paused && Time.timeScale > 0)
+        //{
+        //    float timeDecreaseValue = 0.005f;
+        //    if (Time.timeScale < timeDecreaseValue)
+        //    {
+        //        Time.timeScale = 0;
+        //    }
+        //    else
+        //    {
+        //        Time.timeScale -= timeDecreaseValue;
+        //    }
 
 
-        }
+        //}
 
         // Next Wave Check
         if (currentGameState == gameState.betweenWave)
@@ -170,6 +176,8 @@ public class GameController : Singleton<GameController>
         //selectedHero.upgradePoints++;
 
     }
+
+
 
     void NextWave()
     {
@@ -225,7 +233,7 @@ public class GameController : Singleton<GameController>
 
     private void PlayerInput()
     {
-        if (currentGameState != gameState.paused)
+        if (currentGameState != gameState.paused && currentGameState != gameState.defeat)
         {
             inputVector.x = Input.GetAxis("Horizontal");
             inputVector.z = Input.GetAxis("Vertical");
@@ -280,7 +288,7 @@ public class GameController : Singleton<GameController>
             {
                 previousGameState = currentGameState;
                 currentGameState = gameState.paused;
-                //Time.timeScale = 0;
+                Time.timeScale = 0;
                 PlayerUIController.Instance.ShowPauseMenu(true);
             }
             else if (currentGameState == gameState.paused)
@@ -293,7 +301,16 @@ public class GameController : Singleton<GameController>
         }
     }
 
+    private void PauseGame(bool isPaused)
+    {
 
+    }
+
+    private void DeathEndgame(Unit dyingHero)
+    {
+        PlayerUIController.Instance.defeatPanel.gameObject.SetActive(true);
+        currentGameState = gameState.defeat;
+    }
 
     // Info
     private InfoPanel SpawnInfoPanel(Unit incomingUnit)

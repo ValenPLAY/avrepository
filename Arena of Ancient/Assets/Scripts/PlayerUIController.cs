@@ -7,6 +7,7 @@ public class PlayerUIController : Singleton<PlayerUIController>
     [Header("Panels")]
     public GameObject inGamePanel;
     public GameObject pausePanel;
+    public GameObject defeatPanel;
 
     [Header("Wave Info Display")]
     public TMP_Text waveNumberText;

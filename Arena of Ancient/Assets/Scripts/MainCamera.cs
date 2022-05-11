@@ -25,8 +25,7 @@ public class MainCamera : MonoBehaviour
         if (Input.mouseScrollDelta.y != 0.0f)
         {
             zoomMultiplier -= Input.mouseScrollDelta.y * zoomSensitivity;
-            if (zoomMultiplier < zoomMultiplierLimit.x) zoomMultiplier = zoomMultiplierLimit.x;
-            if (zoomMultiplier > zoomMultiplierLimit.y) zoomMultiplier = zoomMultiplierLimit.y;
+            zoomMultiplier = Mathf.Clamp(zoomMultiplier,zoomMultiplierLimit.x,zoomMultiplierLimit.y);
         }
         if (GameController.Instance.selectedHero != null)
         {

@@ -17,6 +17,8 @@ public class EnemyMelee : Unit
     [SerializeField] float healthIncreasePerWave;
     [SerializeField] float damageIncreasePerWave;
 
+    private float missRangeMultiplier = 1.2f;
+
     // Start is called before the first frame update
     override protected void Awake()
     {
@@ -91,19 +93,12 @@ public class EnemyMelee : Unit
         if (currentTarget != null)
         {
             distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
-            if (distanceTillTarget <= attackRange)
+            if (distanceTillTarget <= attackRange * missRangeMultiplier)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
         }
-        else
-        {
             return false;
-        }
     }
 
     protected override void Death()

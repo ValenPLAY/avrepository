@@ -35,6 +35,7 @@ public class Unit : MonoBehaviour
         }
     }
     public Action<float, float> onHealthChangedEvent;
+    public Action<Unit> onUnitDeathEvent;
 
     public float healthRegeneration = 0.0f;
     public float healthRegenerationBonus;
@@ -130,6 +131,7 @@ public class Unit : MonoBehaviour
     {
         if (unitState != state.dying)
         {
+            onUnitDeathEvent?.Invoke(this);
             unitState = state.dying;
             if (unitAnimator != null)
             {
