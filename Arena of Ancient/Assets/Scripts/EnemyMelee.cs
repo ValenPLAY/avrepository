@@ -30,39 +30,41 @@ public class EnemyMelee : Unit
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = movementSpeed;
+
+        unitState = state.paused;
     }
 
     // Update is called once per frame
     override protected void Update()
     {
-        if (currentTarget == null)
+        if (unitState != state.paused)
         {
-            if (retargetDurationCurrent <= 0)
+            if (currentTarget == null)
             {
-                Retarget();
-                retargetDurationCurrent = retargetDuration;
-            }
+                if (retargetDurationCurrent <= 0)
+                {
+                    Retarget();
+                    retargetDurationCurrent = retargetDuration;
+                }
 
-            retargetDurationCurrent -= Time.deltaTime;
+                retargetDurationCurrent -= Time.deltaTime;
+            }
+            if (currentTarget != null)
+            {
+                targetMovedDistance = Vector3.Distance(currentTarget.transform.position, agent.destination);
+
+                if (targetMovedDistance >= retargetMovingTargetDistance)
+                {
+                    agent.SetDestination(currentTarget.transform.position);
+                }
+                if (AbleToHitCheck())
+                {
+                    agent.ResetPath();
+                    OrderAttack();
+                }
+            }
+            unitAnimator.SetBool("isWalking", agent.velocity != Vector3.zero);
         }
-        if (currentTarget != null)
-        {
-            targetMovedDistance = Vector3.Distance(currentTarget.transform.position, agent.destination);
-
-            if (targetMovedDistance >= retargetMovingTargetDistance)
-            {
-                agent.SetDestination(currentTarget.transform.position);
-            }
-
-            distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
-
-            if (distanceTillTarget <= attackRange)
-            {
-                agent.ResetPath();
-                OrderAttack();
-            }
-        }
-
         base.Update();
     }
 
@@ -80,17 +82,27 @@ public class EnemyMelee : Unit
     protected override void Attack()
     {
         base.Attack();
-        if (unitAnimator != null)
-        {
 
-        }
-        else
+        if (AbleToHitCheck()) DealDamage(currentTarget);
+    }
+
+    protected virtual bool AbleToHitCheck()
+    {
+        if (currentTarget != null)
         {
             distanceTillTarget = Vector3.Distance(currentTarget.transform.position, transform.position);
             if (distanceTillTarget <= attackRange)
             {
-                DealDamage(currentTarget);
+                return true;
             }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 

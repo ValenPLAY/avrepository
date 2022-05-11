@@ -16,6 +16,17 @@ public class GameController : Singleton<GameController>
 
     [Header("Player Information")]
     public Hero selectedHero;
+    public Hero SelectedHero
+    {
+        get => selectedHero;
+        set
+        {
+            selectedHero = value;
+            onHeroChangeEvent?.Invoke(selectedHero);
+        }
+    }
+    public Action<Hero> onHeroChangeEvent;
+
     public Vector3 playerWorldMousePos;
     public Camera mainCamera;
 
@@ -85,11 +96,16 @@ public class GameController : Singleton<GameController>
         enemiesToSpawnNumber = enemiesStartCount;
     }
 
+
     // Update is called once per frame
     void Update()
     {
         PlayerCameraUpdate();
-        PlayerInput();
+        if (selectedHero != null)
+        {
+            PlayerInput();
+        }
+
 
 
         if (currentGameState == gameState.inGame)
@@ -222,8 +238,39 @@ public class GameController : Singleton<GameController>
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 //EnemySpawnController.Instance.SpawnEnemy(waveEnemy);
-                selectedHero.TakeDamage(1);
+                //selectedHero.TakeDamage(1);
             }
+
+            if (Input.GetButtonDown("Cast Ability 1"))
+            {
+                if (selectedHero.abilities[0] != null) selectedHero.abilities[0].AbilityCastDown();
+            }
+
+            if (Input.GetButtonDown("Cast Ability 2"))
+            {
+                if (selectedHero.abilities[1] != null) selectedHero.abilities[1].AbilityCastDown();
+            }
+
+            if (Input.GetButtonDown("Cast Ability 3"))
+            {
+                if (selectedHero.abilities[2] != null) selectedHero.abilities[2].AbilityCastDown();
+            }
+
+            if (Input.GetButtonDown("Cast Ability 4"))
+            {
+                if (selectedHero.abilities[3] != null) selectedHero.abilities[3].AbilityCastDown();
+            }
+
+            if (Input.GetButtonDown("Show Hero Panel"))
+            {
+                PlayerUIController.Instance.heroPanelButton.ShowHeroPanel();
+            }
+
+            if (Input.GetButtonUp("Show Hero Panel"))
+            {
+                PlayerUIController.Instance.heroPanelButton.HideHeroPanel();
+            }
+
         }
 
 

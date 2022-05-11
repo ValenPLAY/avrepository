@@ -8,6 +8,7 @@ public class Unit : MonoBehaviour
         normal,
         stunned,
         paused,
+        dying,
     }
 
     protected state unitState;
@@ -15,6 +16,7 @@ public class Unit : MonoBehaviour
     [Header("Unit Description")]
     public string unitName = "Unnamed Unit";
     public string unitDescription = "Unnamed Desc";
+    public Sprite unitIcon;
 
     [Header("Unit Statistics")]
     [Header("Health")]
@@ -126,15 +128,20 @@ public class Unit : MonoBehaviour
 
     protected virtual void Death()
     {
-        if (unitAnimator != null)
+        if (unitState != state.dying)
         {
-            unitAnimator.SetTrigger("Death");
+            unitState = state.dying;
+            if (unitAnimator != null)
+            {
+                unitAnimator.SetTrigger("Death");
+            }
+            else
+            {
+                Destroy(gameObject);
+                Debug.Log(unitName + " has fallen.");
+            }
         }
-        else
-        {
-            Destroy(gameObject);
-            Debug.Log(unitName + " has fallen.");
-        }
+
 
     }
 
@@ -142,8 +149,16 @@ public class Unit : MonoBehaviour
     {
         if (attackCooldownCurrent <= 0 && unitState == state.normal)
         {
+            if (unitAnimator != null)
+            {
+                unitAnimator.SetTrigger("Attack");
+            }
+            else
+            {
+                Attack();
+            }
             attackCooldownCurrent = attackSpeedActual;
-            Attack();
+
         }
     }
 
@@ -190,5 +205,15 @@ public class Unit : MonoBehaviour
         movementSpeedActual = movementSpeed + movementSpeedBonus;
 
         if (currentHealth > healthActual) currentHealth = healthActual;
+    }
+
+    protected virtual void UnitEnable()
+    {
+        unitState = state.normal;
+    }
+
+    protected virtual void DespawnUnit()
+    {
+        Destroy(gameObject);
     }
 }

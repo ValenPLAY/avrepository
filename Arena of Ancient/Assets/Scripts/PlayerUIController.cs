@@ -11,29 +11,51 @@ public class PlayerUIController : Singleton<PlayerUIController>
     [Header("Wave Info Display")]
     public TMP_Text waveNumberText;
 
-    [Header("Bars")]
+    [Header("UI Elements")]
+
     public Slider healthBar;
     public Slider energyBar;
     private float defaultHealthBarSize;
     private float defaultEnergyBarSize;
+    [SerializeField] Image heroImage;
+    public HeroPanelButton heroPanelButton;
+
+    public UIInfoPanel uiInfoPanel;
 
     [Header("Abilities")]
-    public GameObject abilitiesContainer;
+    public GridLayoutGroup abilitiesContainer;
 
-    private void Awake()
-    {
-    }
+    [Header("Used Prefabs")]
+    public UIAbilityIcon basicAbilityIcon;
+    public Sprite missingIcon;
+    //public uiBuffIcon
 
     // Start is called before the first frame update
     void Start()
     {
+        GameController.Instance.onHeroChangeEvent += HeroIconUpdate;
         GameController.Instance.selectedHero.onHealthChangedEvent += OnHealthChangedCallback;
         GameController.Instance.currentWaveChangedEvent += OnWaveChangedCallback;
+
+        HeroIconUpdate(GameController.Instance.selectedHero);
     }
 
     // Update is called once per frame
     void Update()
     {
+
+    }
+
+    private void HeroIconUpdate(Hero changedHero)
+    {
+        if (changedHero.unitIcon != null)
+        {
+            heroImage.sprite = changedHero.unitIcon;
+        }
+        else
+        {
+            heroImage.sprite = PlayerUIController.Instance.missingIcon;
+        }
 
     }
 
@@ -54,11 +76,4 @@ public class PlayerUIController : Singleton<PlayerUIController>
         pausePanel.SetActive(state);
     }
 
-    public void UIUpdate()
-    {
-        Unit selectedHero = GameController.Instance.selectedHero;
-        float healthValueActual = defaultHealthBarSize * (selectedHero.GetCurrentHealth() / selectedHero.GetMaximumHealth());
-        //healthBar.sizeDelta = new Vector2(healthValueActual, healthBar.sizeDelta.y);
-
-    }
 }

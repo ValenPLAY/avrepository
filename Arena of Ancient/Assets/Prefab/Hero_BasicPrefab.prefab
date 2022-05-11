@@ -307,8 +307,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5be4814b0a360d4eb2c9a9e0d95b4a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitName: Unnamed Unit
-  unitDescription: Unnamed Desc
+  unitName: Basic Ranged Hero
+  unitDescription: Basic ranged hero prefab with no additional abilities. Able to
+    shoot giant white squares that deal 1 damage.
+  unitIcon: {fileID: 1175912834, guid: de48d5b64192cf048a817d7bdf483de2, type: 3}
   health: 10
   healthBonus: 0
   healthRegeneration: 0
@@ -322,10 +324,13 @@ MonoBehaviour:
   attackRange: 5
   movementSpeed: 5
   movementSpeedBonus: 0
+  startingAbilities: []
   abilities: []
+  unitModel: {fileID: 0}
   upperBody: {fileID: 3477519066632877542}
   lowerBody: {fileID: 4786362392366917564}
   rotationSpeed: 500
+  upgradePoints: 0
   isInstant: 0
   unitProjectile: {fileID: 6799761996885518596, guid: 015397003c8383f498a1b8f637adf62e, type: 3}
   firingPoint: {fileID: 298039584492058989}

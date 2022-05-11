@@ -4,6 +4,7 @@ using UnityEngine;
 public class Hero : Unit
 {
     [Header("Hero Abilities")]
+    [SerializeField] List<Ability> startingAbilities = new List<Ability>();
     public List<Ability> abilities = new List<Ability>();
 
     [Header("Hero Body Parts")]
@@ -24,6 +25,14 @@ public class Hero : Unit
         defaultUpperBodyRotation = transform.rotation;
         characterController = GetComponent<CharacterController>();
 
+        if (startingAbilities.Count > 0)
+        {
+            for (int x = 0; x < startingAbilities.Count; x++)
+            {
+                Ability createdAbility = Instantiate(startingAbilities[x], transform);
+                abilities.Add(createdAbility);
+            }
+        }
     }
 
     protected void GainSkillPoint()
