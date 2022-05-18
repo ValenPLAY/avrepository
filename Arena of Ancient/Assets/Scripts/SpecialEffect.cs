@@ -15,7 +15,6 @@ public class SpecialEffect : MonoBehaviour
 
     private void Awake()
     {
-        Debug.Log(transform.rotation.eulerAngles);
         if (isRandomRotation)
         {
             randomRotation.y = Random.Range(0.0f, 360.0f);

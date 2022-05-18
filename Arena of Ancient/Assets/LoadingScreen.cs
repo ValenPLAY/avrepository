@@ -4,6 +4,6 @@ public class LoadingScreen : MonoBehaviour
 {
     public void StartLoading(int loadID)
     {
-        MainMenuController.Instance.LoadLevel(loadID);
+        LoadingController.Instance.LoadLevelAsync(loadID);
     }
 }

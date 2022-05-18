@@ -31,6 +31,8 @@ public class GameController : Singleton<GameController>
     public Vector3 playerWorldMousePos;
     public Camera mainCamera;
 
+    public int enemiesKilled;
+
     [Header("Hero Movement")]
     public Vector3 inputVector;
 
@@ -90,7 +92,12 @@ public class GameController : Singleton<GameController>
             selectedHero = FindObjectOfType<Hero>();
         }
 
-        if (LoadingController.loadingHero != null)
+        if (LoadingController.Instance == null)
+        {
+
+        }
+
+        if (LoadingController.Instance.loadingHero != null)
         {
             if (selectedHero != null) Destroy(selectedHero.gameObject);
             SpawnHero(heroSpawnPoint.position);
@@ -174,7 +181,7 @@ public class GameController : Singleton<GameController>
 
     void SpawnHero(Vector3 spawnPosition)
     {
-        selectedHero = Instantiate(LoadingController.loadingHero, spawnPosition, Quaternion.identity);
+        selectedHero = Instantiate(LoadingController.Instance.loadingHero, spawnPosition, Quaternion.identity);
     }
 
     //Wave Specifics
@@ -322,7 +329,9 @@ public class GameController : Singleton<GameController>
     {
         PlayerUIController.Instance.defeatPanel.gameObject.SetActive(true);
         currentGameState = gameState.defeat;
-        LoadingController.isPostGameSummary = true;
+        LoadingController.Instance.isPostGameSummary = true;
+        LoadingController.Instance.wavesSurvived = currentWave;
+        
     }
 
     // Info

@@ -28,7 +28,7 @@ public class MainMenuController : Singleton<MainMenuController>
     [SerializeField] TMP_Text heroDescriptionText;
 
     [Header("Loading")]
-    [SerializeField] Slider loadingBarSlider;
+    public Slider loadingBarSlider;
 
 
     private void Awake()
@@ -37,6 +37,11 @@ public class MainMenuController : Singleton<MainMenuController>
         ChangePanel(startingPanelID);
         CreateHeroIcons();
         CreateHero(0);
+
+        if (LoadingController.Instance.isPostGameSummary)
+        {
+            ChangePanel(3);
+        }
     }
 
     void Update()
@@ -69,7 +74,7 @@ public class MainMenuController : Singleton<MainMenuController>
         {
             currentlySelectedHero = Instantiate(selectableHeroes[selectedHeroID], defaultHeroPosition);
             heroDescriptionText.text = "<color=#ff7d19><b>" + currentlySelectedHero.unitName + "</b></color><br>" + currentlySelectedHero.unitDescription;
-            LoadingController.loadingHero = selectableHeroes[selectedHeroID];
+            LoadingController.Instance.loadingHero = selectableHeroes[selectedHeroID];
         }
 
     }
@@ -101,21 +106,5 @@ public class MainMenuController : Singleton<MainMenuController>
 
     }
 
-    public void LoadLevel(int sceneID)
-    {
-        StartCoroutine(LoadAsync(sceneID));
-    }
 
-    IEnumerator LoadAsync(int sceneID)
-    {
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneID);
-
-        while (!operation.isDone)
-        {
-            float loadProgress = Mathf.Clamp01(operation.progress / 0.9f);
-            loadingBarSlider.value = loadProgress;
-
-            yield return null;
-        }
-    }
 }

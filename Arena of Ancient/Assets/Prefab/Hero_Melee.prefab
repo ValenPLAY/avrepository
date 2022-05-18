@@ -314,7 +314,7 @@ MonoBehaviour:
   unitHitEffect: {fileID: 0}
   health: 10
   healthBonus: 0
-  healthRegeneration: 1
+  healthRegeneration: 0
   healthRegenerationBonus: 0
   armor: 0
   armorBonus: 0
