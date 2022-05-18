@@ -7,6 +7,8 @@ TagManager:
   - Hero
   - Projectile
   - Arena
+  - FxTemporaire
+  - Spawn Point
   layers:
   - Default
   - TransparentFX

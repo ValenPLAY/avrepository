@@ -76,6 +76,7 @@ public class GameController : Singleton<GameController>
     [Header("Prefab Variables")]
     public Arena arena;
     public InfoPanel infoPanelPrefab;
+    public Transform heroSpawnPoint;
     private InfoPanel currentInfoPanel;
 
 
@@ -87,6 +88,12 @@ public class GameController : Singleton<GameController>
         if (selectedHero == null)
         {
             selectedHero = FindObjectOfType<Hero>();
+        }
+
+        if (LoadingController.loadingHero != null)
+        {
+            if (selectedHero != null) Destroy(selectedHero.gameObject);
+            SpawnHero(heroSpawnPoint.position);
         }
 
         if (arena == null)
@@ -163,6 +170,11 @@ public class GameController : Singleton<GameController>
         }
 
         RenderSettings.skybox.SetFloat("_Rotation", Time.time * 0.4f);
+    }
+
+    void SpawnHero(Vector3 spawnPosition)
+    {
+        selectedHero = Instantiate(LoadingController.loadingHero, spawnPosition, Quaternion.identity);
     }
 
     //Wave Specifics
@@ -310,6 +322,7 @@ public class GameController : Singleton<GameController>
     {
         PlayerUIController.Instance.defeatPanel.gameObject.SetActive(true);
         currentGameState = gameState.defeat;
+        LoadingController.isPostGameSummary = true;
     }
 
     // Info

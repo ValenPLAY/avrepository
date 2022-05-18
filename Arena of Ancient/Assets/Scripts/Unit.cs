@@ -18,6 +18,10 @@ public class Unit : MonoBehaviour
     public string unitDescription = "Unnamed Desc";
     public Sprite unitIcon;
 
+    [Header("Unit Decorations")]
+    [SerializeField] SpecialEffect unitDeathEffect;
+    [SerializeField] SpecialEffect unitHitEffect;
+
     [Header("Unit Statistics")]
     [Header("Health")]
     public float health = 10.0f;
@@ -104,6 +108,11 @@ public class Unit : MonoBehaviour
 
     }
 
+    protected virtual void Start()
+    {
+
+    }
+
     protected virtual void Update()
     {
         if (currentHealth <= healthActual && healthRegenerationActual > 0) currentHealth += Time.deltaTime * healthRegenerationActual;
@@ -119,6 +128,11 @@ public class Unit : MonoBehaviour
         Debug.Log("Incoming Damage: " + incomingDamage);
         incomingDamage = Mathf.Clamp(incomingDamage - armorActual, 0, incomingDamage);
         CurrentHealth -= incomingDamage;
+
+        if (incomingDamage > 0 && unitHitEffect != null)
+        {
+            Instantiate(unitHitEffect, transform.position, unitHitEffect.transform.rotation);
+        }
 
         if (CurrentHealth <= 0)
         {
@@ -139,7 +153,8 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject);
+
+                DespawnUnit();
                 Debug.Log(unitName + " has fallen.");
             }
         }
@@ -216,6 +231,10 @@ public class Unit : MonoBehaviour
 
     protected virtual void DespawnUnit()
     {
+        if (unitDeathEffect != null)
+        {
+            Instantiate(unitDeathEffect, transform.position, unitHitEffect.transform.rotation);
+        }
         Destroy(gameObject);
     }
 }

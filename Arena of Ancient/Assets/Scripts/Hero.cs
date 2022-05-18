@@ -18,18 +18,25 @@ public class Hero : Unit
     [Header("Hero Upgrades")]
     public int upgradePoints;
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
-        GameController.Instance.waveFinishedEvent += GainSkillPoint;
-        defaultUpperBodyRotation = transform.rotation;
-        characterController = GetComponent<CharacterController>();
+        base.Start();
+
+        if (GameController.Instance != null)
+        {
+            GameController.Instance.waveFinishedEvent += GainSkillPoint;
 
             for (int x = 0; x < startingAbilities.Count; x++)
             {
                 Ability createdAbility = Instantiate(startingAbilities[x], transform);
                 abilities.Add(createdAbility);
             }
+        }
+
+        defaultUpperBodyRotation = transform.rotation;
+        characterController = GetComponent<CharacterController>();
+
+
     }
 
     protected void GainSkillPoint()
@@ -40,7 +47,11 @@ public class Hero : Unit
 
     protected override void Update()
     {
-        if (unitState == state.normal) MoveHero(GameController.Instance.inputVector);
+        if (unitState == state.normal && GameController.Instance != null)
+        {
+            MoveHero(GameController.Instance.inputVector);
+        }
+
         base.Update();
     }
 
@@ -65,7 +76,9 @@ public class Hero : Unit
         if (unitModel != null && lowerBody == null && upperBody == null)
         {
             unitModel.transform.LookAt(GameController.Instance.playerWorldMousePos);
-
+            Vector3 heroRotation = unitModel.transform.rotation.eulerAngles;
+            heroRotation.x = 0.0f;
+            unitModel.transform.rotation = Quaternion.Euler(heroRotation);
         }
     }
 }

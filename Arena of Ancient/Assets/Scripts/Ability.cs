@@ -25,15 +25,18 @@ public class Ability : MonoBehaviour
     {
         name = "Ability: " + abilityName;
         abilityOwner = transform.parent.GetComponent<Hero>();
-        if (abilityOwner != null)
+        if (abilityOwner != null && PlayerUIController.Instance != null)
         {
             correspondingIcon = Instantiate(PlayerUIController.Instance.basicAbilityIcon, PlayerUIController.Instance.abilitiesContainer.transform);
+
+            if (abilityIcon != null)
+            {
+                correspondingIcon.UpdateUIIcon(abilityIcon, 0);
+                correspondingIcon.correspondingAbility = this;
+            }
         }
 
-        if (abilityIcon != null)
-        {
-            correspondingIcon.UpdateUIIcon(abilityIcon, 0);
-        }
+
 
     }
 
@@ -65,5 +68,15 @@ public class Ability : MonoBehaviour
         {
             Destroy(correspondingIcon);
         }
+    }
+
+    public virtual string getAbilityName()
+    {
+        return abilityName;
+    }
+
+    public virtual string getAbilityDesc()
+    {
+        return abilityDescription;
     }
 }
