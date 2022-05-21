@@ -55,6 +55,11 @@ public class Hero : Unit
         base.Update();
     }
 
+    private void LateUpdate()
+    {
+
+    }
+
     protected void MoveHero(Vector3 movementVector)
     {
         movementVector.y = Physics.gravity.y;

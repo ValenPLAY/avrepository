@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Ability : MonoBehaviour
@@ -10,6 +11,9 @@ public class Ability : MonoBehaviour
     [Header("Ability Stats")]
     public int abilityLevel = 1;
     [SerializeField] bool isActive;
+    [SerializeField] bool isOnCastUp;
+    [SerializeField] float cooldownDuration;
+    private float cooldownDurationCurrent;
     [SerializeField] Buff appliedBuff;
 
     [Header("Aura Options")]
@@ -19,6 +23,9 @@ public class Ability : MonoBehaviour
     private Unit abilityOwner;
     private int abilityNumber;
     private UIAbilityIcon correspondingIcon;
+
+    [Header("Ability Effects")]
+    [SerializeField] List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -43,22 +50,40 @@ public class Ability : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-
+        if (cooldownDurationCurrent > 0) cooldownDurationCurrent -= Time.deltaTime;
     }
 
     public virtual void AbilityCastDown()
     {
-        if (isActive)
+        if (isActive && !isOnCastUp)
         {
-
+            CastAbility();
         }
     }
 
     public virtual void AbilityCastUp()
     {
-        if (isActive)
+        if (isActive && isOnCastUp)
         {
+            CastAbility();
+        }
+    }
 
+    public virtual void CastAbility()
+    {
+        if (cooldownDurationCurrent <= 0)
+        {
+            foreach (AbilityEffect appliedEffect in abilityEffects)
+            {
+                appliedEffect.ApplyEffect(abilityOwner);
+                Debug.Log("Ability Casted");
+            }
+
+            cooldownDurationCurrent = cooldownDuration;
+        }
+        else
+        {
+            Debug.Log("Ability is on Cooldown");
         }
     }
 

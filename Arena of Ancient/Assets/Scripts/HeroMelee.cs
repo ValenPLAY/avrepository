@@ -6,7 +6,7 @@ public class HeroMelee : Hero
 
     protected override void Attack()
     {
-        SpawnController.Instance.CreateHitZone(hitPrefab, transform);
+        SpawnController.Instance.CreateHitZone(hitPrefab, this);
 
         base.Attack();
     }

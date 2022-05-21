@@ -71,8 +71,18 @@ public class SpawnController : Singleton<SpawnController>
         firedProjectile.gameObject.SetActive(true);
     }
 
-    public void CreateHitZone(HitZone hitZonePrefab, Transform attackingUnit)
+    public void CreateHitZone(HitZone hitZonePrefab, Unit attackingUnit)
     {
-        HitZone createdHitZone = Instantiate(hitZonePrefab, attackingUnit);
+        HitZone createdHitZone = Instantiate(hitZonePrefab, attackingUnit.transform);
+        createdHitZone.hitZoneOwner = attackingUnit;
+        createdHitZone.gameObject.SetActive(true);
+    }
+
+    public void CreateHitZone(HitZone hitZonePrefab, Unit castingUnit, float abilityDamage)
+    {
+        HitZone createdHitZone = Instantiate(hitZonePrefab, castingUnit.transform.position, Quaternion.identity);
+        createdHitZone.hitZoneOwner = castingUnit;
+        createdHitZone.hitZoneDamage = abilityDamage;
+        createdHitZone.gameObject.SetActive(true);
     }
 }

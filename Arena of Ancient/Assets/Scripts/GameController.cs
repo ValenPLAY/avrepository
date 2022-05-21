@@ -87,17 +87,12 @@ public class GameController : Singleton<GameController>
     {
         mainCamera = Camera.main;
 
-        if (selectedHero == null)
+        if (selectedHero == null && LoadingController.Instance == null)
         {
             selectedHero = FindObjectOfType<Hero>();
         }
 
-        if (LoadingController.Instance == null)
-        {
-
-        }
-
-        if (LoadingController.Instance.loadingHero != null)
+        if (LoadingController.Instance != null)
         {
             if (selectedHero != null) Destroy(selectedHero.gameObject);
             SpawnHero(heroSpawnPoint.position);
@@ -331,7 +326,7 @@ public class GameController : Singleton<GameController>
         currentGameState = gameState.defeat;
         LoadingController.Instance.isPostGameSummary = true;
         LoadingController.Instance.wavesSurvived = currentWave;
-        
+
     }
 
     // Info

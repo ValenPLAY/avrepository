@@ -4,23 +4,37 @@ public class HitZone : MonoBehaviour
 {
     [SerializeField] float hitZoneDuration = 0.5f;
     [SerializeField] float hitZoneDurationCurrent;
+    public float hitZoneDamage;
     private CapsuleCollider hitZoneCollider;
-    private Unit hitZoneOwner;
+    public Unit hitZoneOwner;
+
+    [SerializeField] bool isMeleeCalculation;
 
     // Start is called before the first frame update
     void Awake()
     {
+        gameObject.SetActive(false);
         hitZoneCollider = GetComponent<CapsuleCollider>();
-        hitZoneOwner = transform.parent.GetComponent<Unit>();
+        //hitZoneOwner = transform.parent.GetComponent<Unit>();
 
-        Vector3 hitDirectionCalculation = hitZoneOwner.transform.position - GameController.Instance.playerWorldMousePos;
-        transform.position = hitZoneOwner.transform.position - (hitDirectionCalculation.normalized * hitZoneOwner.attackRange);
+        hitZoneDurationCurrent = hitZoneDuration;
+    }
 
-        transform.localScale *= hitZoneOwner.attackRange;
+    private void OnEnable()
+    {
+        if (isMeleeCalculation)
+        {
+            Vector3 hitDirectionCalculation = hitZoneOwner.transform.position - GameController.Instance.playerWorldMousePos;
+            transform.position = hitZoneOwner.transform.position - (hitDirectionCalculation.normalized * hitZoneOwner.attackRange);
+            transform.localScale *= hitZoneOwner.attackRange;
+
+            //hitZoneDamage = hitZoneOwner.
+        }
+
         CharacterController hitZoneOwnerCollider = hitZoneOwner.GetComponent<CharacterController>();
         Physics.IgnoreCollision(hitZoneCollider, hitZoneOwnerCollider);
 
-        hitZoneDurationCurrent = hitZoneDuration;
+
     }
 
     // Update is called once per frame
@@ -42,7 +56,14 @@ public class HitZone : MonoBehaviour
 
         if (collidedUnit != null)
         {
-            hitZoneOwner.DealDamage(collidedUnit);
+            if (isMeleeCalculation)
+            {
+                hitZoneOwner.DealDamage(collidedUnit);
+            }
+            else
+            {
+                hitZoneOwner.DealDamage(collidedUnit, hitZoneDamage);
+            }
             //Debug.Log();
         }
     }
