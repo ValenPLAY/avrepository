@@ -87,7 +87,7 @@ public class GameController : Singleton<GameController>
     {
         mainCamera = Camera.main;
 
-        if (selectedHero == null && LoadingController.Instance == null)
+        if (selectedHero == null)
         {
             selectedHero = FindObjectOfType<Hero>();
         }

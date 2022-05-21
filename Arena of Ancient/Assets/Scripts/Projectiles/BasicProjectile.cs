@@ -15,7 +15,10 @@ public class BasicProjectile : Projectile
         Unit hitUnit = other.gameObject.GetComponent<Unit>();
         if (hitUnit != null && hitUnit != projectileOwner)
         {
-            hitUnit.TakeDamage(projectileDamage);
+            if (isDamageOnlyOnHit)
+            {
+                hitUnit.TakeDamage(projectileDamage);
+            }
             if (isDestroyOnHit) DestroyProjectile();
         }
     }

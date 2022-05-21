@@ -25,6 +25,7 @@ public class Ability : MonoBehaviour
     private UIAbilityIcon correspondingIcon;
 
     [Header("Ability Effects")]
+    
     [SerializeField] List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
 
     // Start is called before the first frame update

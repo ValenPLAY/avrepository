@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6672599748302080725}
   - component: {fileID: 6409664507052237867}
   m_Layer: 0
-  m_Name: Ability Prefab 2
+  m_Name: Ability Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,11 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f3bc4dc3e6a0a8e4b92703f8f40da6ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  abilityName: Enchanced Damage
-  abilityDescription: Increases the damage output for a short duration.
+  abilityName: Searing Arrow
+  abilityDescription: Deals significant damage in an area.
   abilityIcon: {fileID: 21300000, guid: 4c966c16a0cb9504a97e1201d1356706, type: 3}
   abilityLevel: 1
-  isActive: 0
+  isActive: 1
+  isOnCastUp: 0
+  cooldownDuration: 0
   appliedBuff: {fileID: 0}
   isAura: 0
   auraRange: 0
+  abilityEffects:
+  - {fileID: 378284921054878527, guid: 4e386f1b00fd7c04a91d4d0dce7628f5, type: 3}
