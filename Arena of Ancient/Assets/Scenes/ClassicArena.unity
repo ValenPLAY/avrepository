@@ -3177,7 +3177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c770a9fc1d18acb449391a3c1bb92719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soundEffectPrefab: {fileID: 4464168690339037943, guid: afb23acd22562144284d324837c85ed0, type: 3}
+  soundEffectPrefab: {fileID: 7606924769732119451, guid: afb23acd22562144284d324837c85ed0, type: 3}
   pitchVariation: 0
 --- !u!4 &1109564359
 Transform:

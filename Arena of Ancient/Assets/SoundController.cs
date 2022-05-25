@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SoundController : Singleton<SoundController>
 {
-    [SerializeField] AudioSource soundEffectPrefab;
+    [SerializeField] SoundEffect soundEffectPrefab;
     [SerializeField] float pitchVariation;
     // Start is called before the first frame update
     void Start()
@@ -10,16 +10,12 @@ public class SoundController : Singleton<SoundController>
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void SpawnSoundEffect(AudioClip incomingSound, Vector3 position)
     {
-        AudioSource spawnedSound = Instantiate(soundEffectPrefab, position, Quaternion.identity);
-        spawnedSound.clip = incomingSound;
-        spawnedSound.PlayDelayed(Random.Range(0.0f, 0.1f));
+        SoundEffect spawnedSound = Instantiate(soundEffectPrefab, position, Quaternion.identity);
+        spawnedSound.soundEffectSource.clip = incomingSound;
+        spawnedSound.UpdateDestroyTime(spawnedSound.soundEffectSource.clip.length);
+        spawnedSound.soundEffectSource.PlayDelayed(Random.Range(0.0f, 0.1f));
+        //spawnedSound.clip.samples
     }
 }
