@@ -265,22 +265,22 @@ public class GameController : Singleton<GameController>
                 //selectedHero.TakeDamage(1);
             }
 
-            if (Input.GetButtonDown("Cast Ability 1"))
+            if (Input.GetButtonDown("Cast Ability 1") && selectedHero.abilities.Count > 0)
             {
                 if (selectedHero.abilities[0] != null) selectedHero.abilities[0].AbilityCastDown();
             }
 
-            if (Input.GetButtonDown("Cast Ability 2"))
+            if (Input.GetButtonDown("Cast Ability 2") && selectedHero.abilities.Count > 1)
             {
                 if (selectedHero.abilities[1] != null) selectedHero.abilities[1].AbilityCastDown();
             }
 
-            if (Input.GetButtonDown("Cast Ability 3"))
+            if (Input.GetButtonDown("Cast Ability 3") && selectedHero.abilities.Count > 2)
             {
                 if (selectedHero.abilities[2] != null) selectedHero.abilities[2].AbilityCastDown();
             }
 
-            if (Input.GetButtonDown("Cast Ability 4"))
+            if (Input.GetButtonDown("Cast Ability 4") && selectedHero.abilities.Count > 3)
             {
                 if (selectedHero.abilities[3] != null) selectedHero.abilities[3].AbilityCastDown();
             }

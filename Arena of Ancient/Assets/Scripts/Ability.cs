@@ -4,28 +4,38 @@ using UnityEngine;
 public class Ability : MonoBehaviour
 {
     [Header("Ability Description")]
+    
+    //[Tooltip("Basic text and visual information about the inspector.")]
     [SerializeField] string abilityName = "Unknown Ability";
-    [SerializeField] string abilityDescription = "A description for an unknown ability";
+    [TextArea][SerializeField] string abilityDescription = "A description for an unknown ability";
+
+    [Space]
+    [Header("Ability Visuals")]
     [SerializeField] Sprite abilityIcon;
 
+    [Space]
     [Header("Ability Stats")]
+    //[Tooltip("Ability statistics, it's level and ways to cast it.")]
+
     public int abilityLevel = 1;
     [SerializeField] bool isActive;
     [SerializeField] bool isOnCastUp;
     [SerializeField] float cooldownDuration;
     private float cooldownDurationCurrent;
-    [SerializeField] Buff appliedBuff;
+    //[SerializeField] Buff appliedBuff;
 
-    [Header("Aura Options")]
-    [SerializeField] bool isAura;
-    [SerializeField] float auraRange;
+    //[Header("Aura Options")]
+    //[SerializeField] bool isAura;
+    //[SerializeField] float auraRange;
 
     private Unit abilityOwner;
     private int abilityNumber;
     private UIAbilityIcon correspondingIcon;
 
+    [Space]
     [Header("Ability Effects")]
-    
+    [Tooltip("Effects that will play upon casting an ability")]
+
     [SerializeField] List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
 
     // Start is called before the first frame update

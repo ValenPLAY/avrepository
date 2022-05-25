@@ -93,4 +93,11 @@ public class SpawnController : Singleton<SpawnController>
         createdHitZone.hitZoneDamage = abilityDamage;
         createdHitZone.gameObject.SetActive(true);
     }
+
+    public void CreateBuff (Unit buffingUnit, Buff incomingBuff)
+    {
+        Buff createdBuff = Instantiate(incomingBuff, buffingUnit.transform);
+        buffingUnit.buffs.Add(createdBuff);
+
+    }
 }

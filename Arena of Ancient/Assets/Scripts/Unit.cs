@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -130,6 +131,8 @@ public class Unit : MonoBehaviour
     public float movementSpeedBonus;
     protected float movementSpeedActual;
 
+    [Header("Buffs")]
+    public List<Buff> buffs = new List<Buff>();
 
     [Header("Unit Components")]
     protected BoxCollider unitColliderBox;
@@ -263,14 +266,15 @@ public class Unit : MonoBehaviour
 
     public void HealFlat(float healAmount)
     {
-        currentHealth += healAmount;
-        StatUpdate();
+        //currentHealth += healAmount;
+        CurrentHealth = Mathf.Clamp(CurrentHealth + healAmount, 0, healthActual);
+        //StatUpdate();
     }
 
     public void HealPercentage(float healAmountPercentage)
     {
-        currentHealth *= healAmountPercentage;
-        StatUpdate();
+        CurrentHealth = Mathf.Clamp(CurrentHealth * healAmountPercentage, 0, healthActual);
+        //StatUpdate();
     }
 
     public float GetMaximumHealth()

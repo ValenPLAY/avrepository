@@ -10,6 +10,8 @@ public class SpecialEffect : MonoBehaviour
     private Vector3 randomScale;
     private float zeroScaleCompensation = 0.01f;
 
+    [Header("Destroy Values")]
+    [SerializeField] bool isAutoDestroy = true;
     [SerializeField] float timeTillDestroyDefault = 5.0f;
     private float timeTillDestroyCurrent;
 
@@ -40,13 +42,17 @@ public class SpecialEffect : MonoBehaviour
 
     private void Update()
     {
-        if (timeTillDestroyCurrent <= 0)
+        if (isAutoDestroy)
         {
-            Destroy(gameObject);
+            if (timeTillDestroyCurrent <= 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                timeTillDestroyCurrent -= Time.deltaTime;
+            }
         }
-        else
-        {
-            timeTillDestroyCurrent -= Time.deltaTime;
-        }
+
     }
 }

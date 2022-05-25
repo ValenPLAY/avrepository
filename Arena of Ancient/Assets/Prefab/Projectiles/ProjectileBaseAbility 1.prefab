@@ -82,7 +82,7 @@ MonoBehaviour:
   projectileTimeToDestroy: 3
   onDeathEffectPrefab: {fileID: 41601095138650658, guid: cd11b9486b254f44d9da6548308ca544, type: 3}
   isDamageOnlyOnHit: 0
-  additionIncreasedScale: 4
+  additionIncreasedScale: 5
   isDestroyOnHit: 1
 --- !u!1001 &6692296905858871384
 PrefabInstance:

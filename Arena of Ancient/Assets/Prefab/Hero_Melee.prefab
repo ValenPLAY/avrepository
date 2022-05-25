@@ -331,12 +331,13 @@ MonoBehaviour:
   attackRange: 2
   movementSpeed: 5
   movementSpeedBonus: 0
+  buffs: []
   soundSpawn: {fileID: 0}
   soundHit: {fileID: 8300000, guid: 228f1e04cfd55754983e37c613b726fc, type: 3}
   soundDeath: {fileID: 8300000, guid: 43159260274e2aa4ab1aabe6cff979f3, type: 3}
   soundAttack: {fileID: 8300000, guid: 14a890b6b61ebd747847da730d39ec1f, type: 3}
   startingAbilities:
-  - {fileID: 6409664507052237867, guid: b1eabbf959dd5c94a998c1c4888dd04c, type: 3}
+  - {fileID: 6409664507052237867, guid: fca8827c996de8f448f995bb857d0cd6, type: 3}
   - {fileID: 6409664507052237867, guid: 19fafe5beac00b6448e197f8e3d12d78, type: 3}
   - {fileID: 6409664507052237867, guid: 175d40fac69a56b4ea64a569c3a99db9, type: 3}
   abilities: []
