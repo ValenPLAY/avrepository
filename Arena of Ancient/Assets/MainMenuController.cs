@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MainMenuController : Singleton<MainMenuController>
@@ -29,14 +27,22 @@ public class MainMenuController : Singleton<MainMenuController>
 
     [Header("Loading")]
     public Slider loadingBarSlider;
+    public LoadingController loadingController;
 
 
     private void Awake()
     {
+        if (LoadingController.Instance == null)
+        {
+            Instantiate(loadingController);
+        }
+
         mainCameraTransform = Camera.main.transform;
         ChangePanel(startingPanelID);
         CreateHeroIcons();
         CreateHero(0);
+
+
 
         if (LoadingController.Instance.isPostGameSummary)
         {

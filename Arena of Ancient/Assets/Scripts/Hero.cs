@@ -49,6 +49,7 @@ public class Hero : Unit
     {
         if (unitState == state.normal && GameController.Instance != null)
         {
+            //Debug.Log(unitState);
             MoveHero(GameController.Instance.inputVector);
         }
 
@@ -62,13 +63,23 @@ public class Hero : Unit
 
     protected void MoveHero(Vector3 movementVector)
     {
+
         movementVector.y = Physics.gravity.y;
         //movementSpeedActual = movementSpeed;
         characterController.Move(movementVector * Time.deltaTime * movementSpeedActual);
 
+        if (unitAnimator != null)
+        {
+            //Debug.Log(characterController.velocity.x + " " + characterController.velocity.z);
+            unitAnimator.SetBool("isWalking", characterController.velocity.x != 0 || characterController.velocity.z != 0);
+        }
+
         if (lowerBody != null && movementVector != Vector3.zero)
         {
             Quaternion toRotation = Quaternion.LookRotation(movementVector, Vector3.up);
+            Vector3 rotationXCompensation = toRotation.eulerAngles;
+            rotationXCompensation.x = 0.0f;
+            toRotation = Quaternion.Euler(rotationXCompensation);
             lowerBody.transform.rotation = Quaternion.RotateTowards(lowerBody.transform.rotation, toRotation, rotationSpeed * Time.deltaTime);
         }
 

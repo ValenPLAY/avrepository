@@ -25,6 +25,16 @@ public class Unit : MonoBehaviour
     [Header("Unit Statistics")]
     [Header("Health")]
     public float health = 10.0f;
+    public float Health
+    {
+        get => health;
+        set
+        {
+            health = value;
+            healthActual = health + healthBonus;
+            CurrentHealth += value;
+        }
+    }
     public float healthBonus;
     protected float healthActual;
     protected float currentHealth;
@@ -32,7 +42,7 @@ public class Unit : MonoBehaviour
     {
         get => currentHealth;
 
-        protected set
+        set
         {
             currentHealth = value;
             onHealthChangedEvent?.Invoke(currentHealth, healthActual);
@@ -42,11 +52,28 @@ public class Unit : MonoBehaviour
     public Action<Unit> onUnitDeathEvent;
 
     public float healthRegeneration = 0.0f;
+    public float HealthRegeneration
+    {
+        get => healthRegeneration;
+        set
+        {
+            healthRegeneration = value;
+        }
+    }
     public float healthRegenerationBonus;
     protected float healthRegenerationActual;
 
     [Header("Armor")]
     public float armor;
+    public float Armor
+    {
+        get => armor;
+        set
+        {
+            armor = value;
+            armorActual = armor + armorBonus;
+        }
+    }
     public float armorBonus;
     protected float armorActual;
 
@@ -58,18 +85,41 @@ public class Unit : MonoBehaviour
     {
         get => damage;
 
-        protected set
+        set
         {
             damage = value;
+            damageActual = damage + damageBonus;
             onDamageChangeValue?.Invoke(damage);
         }
     }
     public Action<float> onDamageChangeValue;
 
     public float attackSpeed = 1.0f;
+    public float AttackSpeed
+    {
+        get => AttackSpeed;
+        set
+        {
+            attackSpeed = value;
+        }
+    }
     public float attackSpeedBonus = 1.0f;
     private float attackSpeedActual;
     protected float attackCooldownCurrent;
+
+    [Header("Energy")]
+    public float energy = 10.0f;
+    public float Energy
+    {
+        get => energy;
+        set
+        {
+            energy = value;
+            energyActual = energy + energyBonus;
+        }
+    }
+    public float energyBonus;
+    protected float energyActual;
 
     public float attackRange = 5.0f;
 
@@ -86,7 +136,11 @@ public class Unit : MonoBehaviour
     protected CapsuleCollider unitColliderCapsule;
     protected Animator unitAnimator;
 
-
+    [Header("Unit Sounds")]
+    [SerializeField] protected AudioClip soundSpawn;
+    [SerializeField] protected AudioClip soundHit;
+    [SerializeField] protected AudioClip soundDeath;
+    [SerializeField] protected AudioClip soundAttack;
 
 
     protected virtual void Awake()
@@ -105,19 +159,25 @@ public class Unit : MonoBehaviour
 
     protected virtual void Attack()
     {
-
+        if (soundAttack != null)
+        {
+            SoundController.Instance.SpawnSoundEffect(soundAttack, transform.position);
+        }
     }
 
     protected virtual void Start()
     {
-
+        if (soundSpawn != null && GameController.Instance != null)
+        {
+            SoundController.Instance.SpawnSoundEffect(soundSpawn, transform.position);
+        }
     }
 
     protected virtual void Update()
     {
-        if (currentHealth <= healthActual && healthRegenerationActual > 0) currentHealth += Time.deltaTime * healthRegenerationActual;
+        //if (currentHealth <= healthActual && healthRegenerationActual > 0) currentHealth += Time.deltaTime * healthRegenerationActual;
         if (attackCooldownCurrent > 0) attackCooldownCurrent -= Time.deltaTime;
-        if (healthRegenerationActual > 0 && CurrentHealth <= healthActual)
+        if (healthRegenerationActual > 0 && CurrentHealth <= healthActual && CurrentHealth > 0)
         {
             CurrentHealth += healthRegenerationActual * Time.deltaTime;
         }
@@ -132,11 +192,17 @@ public class Unit : MonoBehaviour
         if (incomingDamage > 0 && unitHitEffect != null)
         {
             Instantiate(unitHitEffect, transform.position, unitHitEffect.transform.rotation);
+
         }
 
         if (CurrentHealth <= 0)
         {
             Death();
+        }
+
+        if (soundHit != null && CurrentHealth > 0)
+        {
+            SoundController.Instance.SpawnSoundEffect(soundHit, transform.position);
         }
 
     }
@@ -156,6 +222,11 @@ public class Unit : MonoBehaviour
 
                 DespawnUnit();
                 Debug.Log(unitName + " has fallen.");
+            }
+
+            if (soundDeath != null)
+            {
+                SoundController.Instance.SpawnSoundEffect(soundDeath, transform.position);
             }
         }
 

@@ -1527,19 +1527,23 @@ MonoBehaviour:
   unitIcon: {fileID: 0}
   unitDeathEffect: {fileID: 6263282925942521950, guid: 6d736317f2b18e945a29fc7eb4a72a5a, type: 3}
   unitHitEffect: {fileID: 1731427086125188337, guid: 1f292182eed25964f82767dde7554424, type: 3}
-  health: 15
+  health: 8
   healthBonus: 0
   healthRegeneration: 0
   healthRegenerationBonus: 0
   armor: 0
   armorBonus: 0
-  damage: 1
+  damage: 2
   damageBonus: 0
   attackSpeed: 1
   attackSpeedBonus: 1
   attackRange: 3
-  movementSpeed: 2
+  movementSpeed: 3
   movementSpeedBonus: 0
+  soundSpawn: {fileID: 8300000, guid: 60fbf4456955b494381d171ab5eb26e1, type: 3}
+  soundHit: {fileID: 8300000, guid: 816b58bc3dcd53a42863e048dde4cf24, type: 3}
+  soundDeath: {fileID: 8300000, guid: 6f3c1b72e6f2b0d41b86915db58bd181, type: 3}
+  soundAttack: {fileID: 0}
   retargetMovingTargetDistance: 1
   retargetDuration: 2
   healthIncreasePerWave: 0
@@ -1551,7 +1555,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2655612728377208997}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2d8418b0b9634b1892b0268dd9c2743, type: 3}
   m_Name: 

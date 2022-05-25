@@ -34,6 +34,7 @@ public class GameController : Singleton<GameController>
     public int enemiesKilled;
 
     [Header("Hero Movement")]
+    [SerializeField] private LayerMask targetAqusitionLayers;
     public Vector3 inputVector;
 
     //[Header("Global Variables")]
@@ -80,6 +81,7 @@ public class GameController : Singleton<GameController>
     public InfoPanel infoPanelPrefab;
     public Transform heroSpawnPoint;
     private InfoPanel currentInfoPanel;
+    //public AudioSource audioSourcePrefab;
 
 
     // Start is called before the first frame update
@@ -212,7 +214,7 @@ public class GameController : Singleton<GameController>
     {
         Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, targetAqusitionLayers))
         {
             lookingAtUnit = hit.collider.gameObject.GetComponent<Unit>();
 
