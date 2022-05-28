@@ -300,26 +300,26 @@ public class GameController : Singleton<GameController>
 
         if (Input.GetButtonDown("Cancel"))
         {
-            if (currentGameState == gameState.inGame)
-            {
-                previousGameState = currentGameState;
-                currentGameState = gameState.paused;
-                Time.timeScale = 0;
-                PlayerUIController.Instance.ShowPauseMenu(true);
-            }
-            else if (currentGameState == gameState.paused)
-            {
-                currentGameState = previousGameState;
-                Time.timeScale = 1;
-                PlayerUIController.Instance.ShowPauseMenu(false);
-            }
+            PauseGame();
 
         }
     }
 
-    private void PauseGame(bool isPaused)
+    public void PauseGame()
     {
-
+        if (currentGameState == gameState.inGame)
+        {
+            previousGameState = currentGameState;
+            currentGameState = gameState.paused;
+            Time.timeScale = 0;
+            PlayerUIController.Instance.ShowPauseMenu(true);
+        }
+        else if (currentGameState == gameState.paused)
+        {
+            currentGameState = previousGameState;
+            Time.timeScale = 1;
+            PlayerUIController.Instance.ShowPauseMenu(false);
+        }
     }
 
     private void DeathEndgame(Unit dyingHero)

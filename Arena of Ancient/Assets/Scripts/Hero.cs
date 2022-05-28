@@ -13,10 +13,11 @@ public class Hero : Unit
     protected Quaternion defaultUpperBodyRotation;
     [SerializeField] protected GameObject lowerBody;
     [SerializeField] protected float rotationSpeed = 500.0f;
-    protected CharacterController characterController;
 
     [Header("Hero Upgrades")]
     public int upgradePoints;
+
+    protected CharacterController characterController;
 
     protected override void Start()
     {

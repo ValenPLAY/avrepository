@@ -48,11 +48,9 @@ MonoBehaviour:
   abilityDescription: Heals a unit for 5 health over 5 seconds.
   abilityIcon: {fileID: 21300000, guid: 418f7ac7c65c2df43b79ae10604966c7, type: 3}
   abilityLevel: 1
+  abilityEnergyCost: 5
   isActive: 1
   isOnCastUp: 0
   cooldownDuration: 1
-  appliedBuff: {fileID: 0}
-  isAura: 0
-  auraRange: 0
   abilityEffects:
   - {fileID: 1370275565536728577, guid: 31d598d6f408c4342bbe983c7f5e315d, type: 3}

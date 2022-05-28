@@ -1,42 +1,54 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Ability : MonoBehaviour
 {
     [Header("Ability Description")]
-    
-    //[Tooltip("Basic text and visual information about the inspector.")]
     [SerializeField] string abilityName = "Unknown Ability";
-    [TextArea][SerializeField] string abilityDescription = "A description for an unknown ability";
+    [TextArea] [SerializeField] string abilityDescription = "A description for an unknown ability";
 
-    [Space]
     [Header("Ability Visuals")]
     [SerializeField] Sprite abilityIcon;
 
-    [Space]
     [Header("Ability Stats")]
-    //[Tooltip("Ability statistics, it's level and ways to cast it.")]
-
     public int abilityLevel = 1;
+    public float abilityEnergyCost;
+
     [SerializeField] bool isActive;
     [SerializeField] bool isOnCastUp;
+
     [SerializeField] float cooldownDuration;
     private float cooldownDurationCurrent;
-    //[SerializeField] Buff appliedBuff;
-
-    //[Header("Aura Options")]
-    //[SerializeField] bool isAura;
-    //[SerializeField] float auraRange;
+    private float CooldownDurationCurrent
+    {
+        get => cooldownDurationCurrent;
+        set
+        {
+            cooldownDurationCurrent = value;
+            if (cooldownDuration != 0)
+            {
+                cooldownDurationPercentage = cooldownDurationCurrent / cooldownDuration;
+            }
+            else
+            {
+                cooldownDurationPercentage = 0;
+            }
+            onCooldownPercentageChange?.Invoke(cooldownDurationPercentage);
+        }
+    }
+    private float cooldownDurationPercentage;
+    public Action onAbilityCooldownEvent;
+    public Action<float> onCooldownPercentageChange;
 
     private Unit abilityOwner;
     private int abilityNumber;
     private UIAbilityIcon correspondingIcon;
 
-    [Space]
     [Header("Ability Effects")]
-    [Tooltip("Effects that will play upon casting an ability")]
-
     [SerializeField] List<AbilityEffect> abilityEffects = new List<AbilityEffect>();
+
+
 
     // Start is called before the first frame update
     protected virtual void Awake()
@@ -50,8 +62,11 @@ public class Ability : MonoBehaviour
             if (abilityIcon != null)
             {
                 correspondingIcon.UpdateUIIcon(abilityIcon, 0);
-                correspondingIcon.correspondingAbility = this;
+                correspondingIcon.ConnectIconToAbility(this);
+                //correspondingIcon.gameObject.SetActive(true);
             }
+
+            CooldownDurationCurrent = cooldownDuration;
         }
 
 
@@ -61,7 +76,7 @@ public class Ability : MonoBehaviour
     // Update is called once per frame
     protected virtual void Update()
     {
-        if (cooldownDurationCurrent > 0) cooldownDurationCurrent -= Time.deltaTime;
+        if (CooldownDurationCurrent > 0) CooldownDurationCurrent -= Time.deltaTime;
     }
 
     public virtual void AbilityCastDown()
@@ -82,15 +97,24 @@ public class Ability : MonoBehaviour
 
     public virtual void CastAbility()
     {
-        if (cooldownDurationCurrent <= 0)
+        if (CooldownDurationCurrent <= 0)
         {
-            foreach (AbilityEffect appliedEffect in abilityEffects)
+            if (abilityEnergyCost <= abilityOwner.Energy)
             {
-                appliedEffect.ApplyEffect(abilityOwner);
-                Debug.Log("Ability Casted");
+                foreach (AbilityEffect appliedEffect in abilityEffects)
+                {
+                    appliedEffect.ApplyEffect(abilityOwner);
+                    Debug.Log("Ability Casted");
+                }
+
+                CooldownDurationCurrent = cooldownDuration;
+                abilityOwner.CurrentEnergy -= abilityEnergyCost;
+            }
+            else
+            {
+                Debug.Log("Not enough Energy to cast this Ability");
             }
 
-            cooldownDurationCurrent = cooldownDuration;
         }
         else
         {

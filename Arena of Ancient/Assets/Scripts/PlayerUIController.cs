@@ -35,7 +35,8 @@ public class PlayerUIController : Singleton<PlayerUIController>
     void Start()
     {
         GameController.Instance.onHeroChangeEvent += HeroIconUpdate;
-        GameController.Instance.selectedHero.onHealthChangedEvent += OnHealthChangedCallback;
+        GameController.Instance.selectedHero.onHealthChangedPercentageEvent += OnHealthChangedCallback;
+        GameController.Instance.selectedHero.onCurrentEnergyChangePercentageEvent += OnEnergyChangedCallback;
         GameController.Instance.currentWaveChangedEvent += OnWaveChangedCallback;
 
         HeroIconUpdate(GameController.Instance.selectedHero);
@@ -65,10 +66,15 @@ public class PlayerUIController : Singleton<PlayerUIController>
         waveNumberText.text = currentWave + "";
     }
 
-    void OnHealthChangedCallback(float currentHealth, float maxHealth)
+    void OnHealthChangedCallback(float healthPercentage)
     {
-        float healthValueActual = (currentHealth / maxHealth);
-        healthBar.value = healthValueActual;
+        //float healthValueActual = (currentHealth / maxHealth);
+        healthBar.value = healthPercentage;
+    }
+
+    void OnEnergyChangedCallback(float energyPercentage)
+    {
+        energyBar.value = energyPercentage;
     }
 
     public void ShowPauseMenu(bool state)

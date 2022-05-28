@@ -4,7 +4,7 @@ public class SpawnController : Singleton<SpawnController>
 {
     Vector3 checkPosition;
     Vector3 spawnPosition;
-    float raycastHeight = 20.0f;
+    float raycastHeight = 30.0f;
 
     Vector3 raycastFrom;
 
@@ -94,7 +94,7 @@ public class SpawnController : Singleton<SpawnController>
         createdHitZone.gameObject.SetActive(true);
     }
 
-    public void CreateBuff (Unit buffingUnit, Buff incomingBuff)
+    public void CreateBuff(Unit buffingUnit, Buff incomingBuff)
     {
         Buff createdBuff = Instantiate(incomingBuff, buffingUnit.transform);
         buffingUnit.buffs.Add(createdBuff);

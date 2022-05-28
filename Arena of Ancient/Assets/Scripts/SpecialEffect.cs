@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class SpecialEffect : MonoBehaviour
 {
+    [Header("Spawn Settings")]
     [SerializeField] bool isRandomScale;
     [SerializeField] bool isRandomScaleIndividual;
     [SerializeField] float randomScaleValue;
@@ -9,6 +10,9 @@ public class SpecialEffect : MonoBehaviour
     private Vector3 randomRotation;
     private Vector3 randomScale;
     private float zeroScaleCompensation = 0.01f;
+
+    [Header("Sound Settings")]
+    [SerializeField] AudioClip onSpawnSound;
 
     [Header("Destroy Values")]
     [SerializeField] bool isAutoDestroy = true;
@@ -35,6 +39,11 @@ public class SpecialEffect : MonoBehaviour
         {
             //randomScale = transform.localScale * Random.Range(1 - randomScaleValue, 1 + randomScaleValue);
             transform.localScale *= Random.Range(1 - randomScaleValue, 1 + randomScaleValue);
+        }
+
+        if (onSpawnSound != null)
+        {
+            SoundController.Instance.SpawnSoundEffect(onSpawnSound, transform.position);
         }
 
         timeTillDestroyCurrent = timeTillDestroyDefault;

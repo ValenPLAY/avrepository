@@ -321,17 +321,18 @@ MonoBehaviour:
   armorBonus: 0
   damage: 1
   damageBonus: 0
-  attackSpeed: 1
+  attackSpeed: 0.2
   attackSpeedBonus: 1
   energy: 10
   energyBonus: 0
   attackRange: 5
   movementSpeed: 5
   movementSpeedBonus: 0
+  buffs: []
   soundSpawn: {fileID: 0}
   soundHit: {fileID: 0}
   soundDeath: {fileID: 0}
-  soundAttack: {fileID: 0}
+  soundAttack: {fileID: 8300000, guid: 933792318ac4c9642b13cf900ac934f2, type: 3}
   startingAbilities: []
   abilities: []
   unitModel: {fileID: 6560078859746504412}

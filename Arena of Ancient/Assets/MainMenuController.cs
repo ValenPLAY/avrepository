@@ -32,6 +32,8 @@ public class MainMenuController : Singleton<MainMenuController>
 
     private void Awake()
     {
+        Time.timeScale = 1;
+
         if (LoadingController.Instance == null)
         {
             Instantiate(loadingController);
@@ -48,6 +50,8 @@ public class MainMenuController : Singleton<MainMenuController>
         {
             ChangePanel(3);
         }
+
+
     }
 
     void Update()
@@ -110,6 +114,11 @@ public class MainMenuController : Singleton<MainMenuController>
         }
 
 
+    }
+
+    public void QuitApplication()
+    {
+        Application.Quit();
     }
 
 

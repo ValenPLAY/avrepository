@@ -8,9 +8,38 @@ public class UIAbilityIcon : MonoBehaviour
     [SerializeField] Image abilityImage;
     [SerializeField] GameObject abilityDescPanel;
     [SerializeField] TMP_Text abilityDescText;
+    [SerializeField] TMP_Text hotkeyTMP;
+    Ability correspondingAbility;
+
+    [Header("Overlays")]
+    [SerializeField] Image notEnoughEnergyOverlay;
+    [SerializeField] Image cooldownOverlay;
+
     public Action showDescriptionPanel;
 
-    public Ability correspondingAbility;
+    private void Awake()
+    {
+        if (notEnoughEnergyOverlay != null)
+        {
+            notEnoughEnergyOverlay.gameObject.SetActive(false);
+        }
+
+    }
+
+    private void UpdateIconCooldown(float percentage)
+    {
+        if (cooldownOverlay != null)
+        {
+            cooldownOverlay.fillAmount = percentage;
+        }
+
+    }
+
+    public void ConnectIconToAbility(Ability connectingAbility)
+    {
+        correspondingAbility = connectingAbility;
+        correspondingAbility.onCooldownPercentageChange += UpdateIconCooldown;
+    }
 
     public void UpdateUIIcon(Sprite sprite, int abilityID)
     {

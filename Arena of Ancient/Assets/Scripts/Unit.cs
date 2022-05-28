@@ -25,18 +25,19 @@ public class Unit : MonoBehaviour
 
     [Header("Unit Statistics")]
     [Header("Health")]
-    public float health = 10.0f;
+    [SerializeField] protected float health = 10.0f;
     public float Health
     {
         get => health;
         set
         {
+            float healthDifference = value - health;
             health = value;
             healthActual = health + healthBonus;
-            CurrentHealth += value;
+            CurrentHealth += healthDifference;
         }
     }
-    public float healthBonus;
+    protected float healthBonus;
     protected float healthActual;
     protected float currentHealth;
     public float CurrentHealth
@@ -46,26 +47,28 @@ public class Unit : MonoBehaviour
         set
         {
             currentHealth = value;
-            onHealthChangedEvent?.Invoke(currentHealth, healthActual);
+            onCurrentHealthChangedEvent?.Invoke(currentHealth);
+            onHealthChangedPercentageEvent?.Invoke(currentHealth / healthActual);
         }
     }
-    public Action<float, float> onHealthChangedEvent;
-    public Action<Unit> onUnitDeathEvent;
+    public Action<float> onCurrentHealthChangedEvent;
+    public Action<float> onHealthChangedPercentageEvent;
 
-    public float healthRegeneration = 0.0f;
+    [SerializeField] protected float healthRegeneration = 0.0f;
     public float HealthRegeneration
     {
         get => healthRegeneration;
         set
         {
             healthRegeneration = value;
+            healthRegenerationActual = healthRegeneration + healthRegenerationBonus;
         }
     }
-    public float healthRegenerationBonus;
+    protected float healthRegenerationBonus;
     protected float healthRegenerationActual;
 
     [Header("Armor")]
-    public float armor;
+    [SerializeField] protected float armor;
     public float Armor
     {
         get => armor;
@@ -75,12 +78,12 @@ public class Unit : MonoBehaviour
             armorActual = armor + armorBonus;
         }
     }
-    public float armorBonus;
+    protected float armorBonus;
     protected float armorActual;
 
     [Header("Damage")]
-    public float damage = 1.0f;
-    public float damageBonus;
+    [SerializeField] protected float damage = 1.0f;
+    protected float damageBonus;
     protected float damageActual;
     public float Damage
     {
@@ -95,21 +98,22 @@ public class Unit : MonoBehaviour
     }
     public Action<float> onDamageChangeValue;
 
-    public float attackSpeed = 1.0f;
+    [SerializeField] protected float attackSpeed = 1.0f;
     public float AttackSpeed
     {
-        get => AttackSpeed;
+        get => attackSpeed;
         set
         {
             attackSpeed = value;
+            attackSpeedActual = attackSpeed * (1 + attackSpeedBonus);
         }
     }
-    public float attackSpeedBonus = 1.0f;
-    private float attackSpeedActual;
+    protected float attackSpeedBonus = 0f;
+    protected float attackSpeedActual;
     protected float attackCooldownCurrent;
 
     [Header("Energy")]
-    public float energy = 10.0f;
+    [SerializeField] protected float energy = 10.0f;
     public float Energy
     {
         get => energy;
@@ -119,16 +123,52 @@ public class Unit : MonoBehaviour
             energyActual = energy + energyBonus;
         }
     }
-    public float energyBonus;
+    protected float energyBonus;
     protected float energyActual;
 
-    public float attackRange = 5.0f;
+    protected float currentEnergy;
+    public float CurrentEnergy
+    {
+        get => currentEnergy;
+        set
+        {
+            currentEnergy = value;
+            onCurrentEnergyChangeEvent?.Invoke(currentEnergy);
+            onCurrentEnergyChangePercentageEvent?.Invoke(currentEnergy / energyActual);
+        }
+    }
+    public Action<float> onCurrentEnergyChangeEvent;
+    public Action<float> onCurrentEnergyChangePercentageEvent;
+
+    [SerializeField] protected float energyRegen = 0.25f;
+    public float EnergyRegen
+    {
+        get => energyRegen;
+        set
+        {
+            energyRegen = value;
+            energyRegenActual = energyRegen + energyRegenBonus;
+        }
+    }
+    protected float energyRegenBonus;
+    protected float energyRegenActual;
+
+    [SerializeField] public float attackRange = 5.0f;
 
 
 
     [Header("MovementSpeed")]
     public float movementSpeed = 5.0f;
     public float movementSpeedBonus;
+    public float MovementSpeed
+    {
+        get => movementSpeed;
+        set
+        {
+            movementSpeed = value;
+            movementSpeedActual = movementSpeed + movementSpeedBonus;
+        }
+    }
     protected float movementSpeedActual;
 
     [Header("Buffs")]
@@ -145,6 +185,11 @@ public class Unit : MonoBehaviour
     [SerializeField] protected AudioClip soundDeath;
     [SerializeField] protected AudioClip soundAttack;
 
+    public Action<Unit> onUnitDeathEvent;
+    public Action<Unit> onUnitAttackEvent;
+    public Action<Unit, Unit> onUnitDealDamageEvent;
+    public Action<Unit> onUnitDespawnEvent;
+
 
     protected virtual void Awake()
     {
@@ -154,7 +199,9 @@ public class Unit : MonoBehaviour
 
         StatUpdate();
 
-        currentHealth = healthActual;
+        CurrentHealth = healthActual;
+        CurrentEnergy = energyActual;
+
         unitState = state.normal;
 
         gameObject.name = unitName;
@@ -162,6 +209,7 @@ public class Unit : MonoBehaviour
 
     protected virtual void Attack()
     {
+        onUnitAttackEvent?.Invoke(this);
         if (soundAttack != null)
         {
             SoundController.Instance.SpawnSoundEffect(soundAttack, transform.position);
@@ -180,9 +228,32 @@ public class Unit : MonoBehaviour
     {
         //if (currentHealth <= healthActual && healthRegenerationActual > 0) currentHealth += Time.deltaTime * healthRegenerationActual;
         if (attackCooldownCurrent > 0) attackCooldownCurrent -= Time.deltaTime;
-        if (healthRegenerationActual > 0 && CurrentHealth <= healthActual && CurrentHealth > 0)
+
+        HealthRegenUpdate();
+        EnergyRegenUpdate();
+    }
+
+    void HealthRegenUpdate()
+    {
+        if (healthRegenerationActual > 0 && CurrentHealth < healthActual && CurrentHealth > 0)
         {
             CurrentHealth += healthRegenerationActual * Time.deltaTime;
+        }
+        else if (CurrentHealth > healthActual)
+        {
+            CurrentHealth = healthActual;
+        }
+    }
+
+    void EnergyRegenUpdate()
+    {
+        if (energyRegenActual > 0 && CurrentEnergy < energyActual)
+        {
+            CurrentEnergy += energyRegenActual * Time.deltaTime;
+        }
+        else if (CurrentEnergy > energyActual)
+        {
+            CurrentEnergy = energyActual;
         }
     }
 
@@ -240,8 +311,15 @@ public class Unit : MonoBehaviour
     {
         if (attackCooldownCurrent <= 0 && unitState == state.normal)
         {
+            Debug.Log(attackSpeedActual);
+
             if (unitAnimator != null)
             {
+                if (unitAnimator.GetCurrentAnimatorStateInfo(0).IsName("Attack") == true)
+                {
+                    Attack();
+                }
+
                 unitAnimator.SetTrigger("Attack");
             }
             else
@@ -255,6 +333,7 @@ public class Unit : MonoBehaviour
 
     public void DealDamage(Unit target, float damageAmount)
     {
+        onUnitDealDamageEvent?.Invoke(this, target);
         target.TakeDamage(damageAmount);
     }
 
@@ -289,12 +368,21 @@ public class Unit : MonoBehaviour
 
     protected virtual void StatUpdate()
     {
-        damageActual = damage + damageBonus;
-        healthActual = health + healthBonus;
-        armorActual = armor + armorBonus;
-        attackSpeedActual = attackSpeed * attackSpeedBonus;
-        healthRegenerationActual = healthRegeneration + healthRegenerationBonus;
-        movementSpeedActual = movementSpeed + movementSpeedBonus;
+        //Health
+        Health += 0;
+        HealthRegeneration += 0;
+
+        //Damage
+        Damage += 0;
+        AttackSpeed += 0;
+
+        //Energy
+        Energy += 0;
+        EnergyRegen += 0;
+
+        //Misc
+        Armor += 0;
+        MovementSpeed += 0;
 
         if (currentHealth > healthActual) currentHealth = healthActual;
     }
@@ -306,6 +394,7 @@ public class Unit : MonoBehaviour
 
     protected virtual void DespawnUnit()
     {
+        onUnitDespawnEvent?.Invoke(this);
         if (unitDeathEffect != null)
         {
             Instantiate(unitDeathEffect, transform.position, unitHitEffect.transform.rotation);

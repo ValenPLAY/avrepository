@@ -49,6 +49,8 @@ MonoBehaviour:
   isRandomScaleIndividual: 0
   randomScaleValue: 0
   isRandomRotation: 0
+  onSpawnSound: {fileID: 8300000, guid: cd7044d479df6254982bd71ff58fb1b5, type: 3}
+  isAutoDestroy: 1
   timeTillDestroyDefault: 5
 --- !u!1001 &6214831945306949148
 PrefabInstance:

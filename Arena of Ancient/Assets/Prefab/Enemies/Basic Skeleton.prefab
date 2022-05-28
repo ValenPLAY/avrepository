@@ -1452,7 +1452,7 @@ GameObject:
   - component: {fileID: 5442273151351790430}
   - component: {fileID: 3247158838564414088}
   m_Layer: 6
-  m_Name: EnemyPrefab
+  m_Name: Basic Skeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1524,22 +1524,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitName: Basic Enemy
   unitDescription: Basic Enemy Description
-  unitIcon: {fileID: 0}
+  unitIcon: {fileID: 21300000, guid: 3bdc7738f73cca842aff9c21e842a079, type: 3}
   unitDeathEffect: {fileID: 6263282925942521950, guid: 6d736317f2b18e945a29fc7eb4a72a5a, type: 3}
   unitHitEffect: {fileID: 1731427086125188337, guid: 1f292182eed25964f82767dde7554424, type: 3}
   health: 8
-  healthBonus: 0
   healthRegeneration: 0
-  healthRegenerationBonus: 0
   armor: 0
-  armorBonus: 0
   damage: 2
-  damageBonus: 0
-  attackSpeed: 1
-  attackSpeedBonus: 1
+  attackSpeed: 2
+  energy: 10
+  energyRegen: 0
   attackRange: 3
   movementSpeed: 3
   movementSpeedBonus: 0
+  buffs: []
   soundSpawn: {fileID: 8300000, guid: 60fbf4456955b494381d171ab5eb26e1, type: 3}
   soundHit: {fileID: 8300000, guid: 816b58bc3dcd53a42863e048dde4cf24, type: 3}
   soundDeath: {fileID: 8300000, guid: 6f3c1b72e6f2b0d41b86915db58bd181, type: 3}

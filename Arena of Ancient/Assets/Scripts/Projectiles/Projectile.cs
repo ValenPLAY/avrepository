@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour
         projectileRigidBody = GetComponent<Rigidbody>();
 
         projectileTimeToDestroyCurrent = projectileTimeToDestroy;
-        
+
         //projectileRigidBody.AddForce(transform.forward * projectileSpeed);
     }
 
@@ -48,7 +48,15 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        projectileTimeToDestroyCurrent -= Time.deltaTime;
+        if (projectileTimeToDestroyCurrent > 0)
+        {
+            projectileTimeToDestroyCurrent -= Time.deltaTime;
+        }
+        else
+        {
+            DestroyProjectile();
+        }
+
     }
 
     protected virtual void DestroyProjectile()
@@ -61,7 +69,7 @@ public class Projectile : MonoBehaviour
             createdEffect.gameObject.transform.localScale *= additionIncreasedScale;
             createdEffect.gameObject.SetActive(true);
         }
-        
+
         Destroy(gameObject);
     }
 
